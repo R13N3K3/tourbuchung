@@ -15,7 +15,7 @@ function zahlung(b, t) {
   const link = paypalLink(b, t);
   return [
     `Preis: ${euro(t.preis)} pro Person, bei ${b.personen} ${b.personen === 1 ? 'Person' : 'Personen'} also ${euro(betrag)}. Hunde und Kinder unter 6 Jahren sind kostenfrei.`,
-    'Bezahlt wird per PayPal, Barzahlung vor Ort ist nicht möglich. Bitte zahle bis spätestens zum Tourbeginn.',
+    'Bezahlt wird per PayPal „Freunde“, Barzahlung vor Ort ist nicht möglich. Bitte zahle bis spätestens zum Tourbeginn.',
     link ? `PayPal (Freunde): ${link}` : 'Die PayPal-Daten bekommst du vom Veranstalter.',
     `Bitte gib als Nachricht deinen Code an: ${b.code}`,
   ].join('\n');

@@ -69,14 +69,14 @@ $('form').addEventListener('submit', async e => {
 
 function zeigeErgebnis(d) {
   const warteliste = d.status === 'warteliste';
-  const pay = d.paypal ? `<p>PayPal (Freunde): <a href="https://paypal.me/${encodeURIComponent(d.paypal)}/${d.betrag}EUR">paypal.me/${esc(d.paypal)}/${d.betrag}EUR</a><br>Bitte gib deinen Code <strong>${esc(d.code)}</strong> als Nachricht an.</p>` : '';
+  const pay = d.paypal ? `<p>PayPal „Freunde“: <a href="https://paypal.me/${encodeURIComponent(d.paypal)}/${d.betrag}EUR">paypal.me/${esc(d.paypal)}/${d.betrag}EUR</a><br>Bitte gib deinen Code <strong>${esc(d.code)}</strong> als Nachricht an.</p>` : '';
   $('ergebnis').innerHTML = warteliste
     ? `<h2>Du stehst auf der Warteliste</h2>
        <p>Für ${esc(fmt(d.termin.start))} sind gerade nicht genug Plätze frei. Sobald welche frei werden, rückst du nach und bekommst sofort eine Mail. Bezahlen musst du bis dahin nichts.</p>
        <p class="dim">Dein Code: <strong>${esc(d.code)}</strong></p>`
     : `<h2>Angemeldet ✓</h2>
        <p>Dein Platz für <strong>${esc(fmt(d.termin.start))}</strong> ist reserviert. Die Bestätigung mit allen Details kommt per E-Mail (schau auch im Spam-Ordner nach).</p>
-       <p>Bitte zahle <strong>${d.betrag} €</strong> per PayPal, Barzahlung vor Ort ist nicht möglich.</p>${pay}
+       <p>Bitte zahle <strong>${d.betrag} €</strong> per PayPal „Freunde“, Barzahlung vor Ort ist nicht möglich.</p>${pay}
        <p class="dim">Dein Code: <strong>${esc(d.code)}</strong></p>`;
   $('form').hidden = true;
   $('ergebnis').hidden = false;
