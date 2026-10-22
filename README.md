@@ -2,6 +2,43 @@
 
 Kleine Web-App für geführte Pilztouren. Gäste melden sich selbst an, der Server bestätigt, erinnert und kümmert sich um Warteliste und Absagen. Der Veranstalter muss nur noch Termine anlegen und Zahlungen abhaken. Entstanden nach dem Vorbild des bisherigen Google-Formulars (dieselben Felder und Texte, aber ohne Barzahlung), unabhängig von TourPost.
 
+## So funktioniert es (kurz und einfach)
+
+**Für die Gäste**
+1. Sie öffnen die Seite und suchen sich einen **Termin** aus.
+2. Sie tragen Name, E-Mail und Telefon ein und drücken auf „Anmelden".
+3. Sie bekommen sofort eine **E-Mail** mit allen Infos und einem persönlichen **Code**.
+4. Sie bezahlen per **PayPal „Freunde"** und schreiben den Code dazu.
+5. Kurz vor der Tour kommt eine **Erinnerung**. Danach gibt es ein Dankeschön.
+
+**Für Eduard (der Veranstalter)**
+1. Er legt in der **Verwaltung** (`/admin/`) einen neuen Termin an: Datum, Treffpunkt, Plätze, Preis.
+2. Ab da läuft fast alles von allein: Anmeldungen, Bestätigungen, Warteliste, Erinnerungen.
+3. Er schaut ab und zu in PayPal, ob Geld da ist, und tippt in der Verwaltung beim Gast auf **„bezahlt?"**.
+4. Muss eine Tour ausfallen, drückt er auf **„Termin absagen"**. Alle Angemeldeten bekommen eine Mail.
+
+**So sieht der Ablauf aus**
+
+```
+Eduard legt Termin an
+        │
+        ▼
+Gast meldet sich an ──► Mail mit Code ──► Gast zahlt per PayPal
+        │                                        │
+        │ (Tour voll?)                           ▼
+        ▼                              Eduard tippt „bezahlt ✓"
+   Warteliste ──► rückt nach, sobald                │
+   ein Platz frei wird                              ▼
+                        2 Tage vorher: Erinnerung ──► Tour ──► Danke-Mail
+                                                                   │
+                                                                   ▼
+                                    nach 12 Monaten: persönliche Daten werden gelöscht
+```
+
+**Was Eduard nie von Hand tun muss:** Bestätigungen schreiben, Erinnerungen schicken, die Warteliste pflegen, Zahlungs-Nachfragen stellen, alte Daten löschen.
+
+**Was er noch selbst tun muss:** Termine anlegen, Zahlungen abhaken, bei Absagen auf den Knopf drücken, und PayPal im Blick behalten.
+
 ## Was automatisch passiert
 
 | Wann | Was |
