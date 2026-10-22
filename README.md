@@ -39,6 +39,22 @@ Gast meldet sich an ──► Mail mit Code ──► Gast zahlt per PayPal
 
 **Was er noch selbst tun muss:** Termine anlegen, Zahlungen abhaken, bei Absagen auf den Knopf drücken, und PayPal im Blick behalten.
 
+## Geplant: Zahlung automatisch erkennen (PayPal Checkout)
+
+**Was es kostet** (Zahlen nicht geprüft, vor der Entscheidung bei PayPal nachsehen):
+- Ein **PayPal-Geschäftskonto**, soweit bekannt ohne Grundgebühr.
+- Pro Zahlung eine **Gebühr von etwa 3 % plus einem kleinen Festbetrag**, die der Veranstalter trägt. Bei 40 € sind das grob 1,50 €, bei 80 € (zwei Personen) grob 2,80 €. Die Gäste zahlen nichts extra.
+- Im Vergleich: „Freunde" kostet nichts, ist aber für bezahlte Leistungen nicht erlaubt (kein Käuferschutz, Kontosperrung möglich).
+
+**Was man dafür bekommt:**
+- Der Gast zahlt direkt auf der Seite per PayPal-Knopf. PayPal meldet die Zahlung **sofort** an den Server, die Anmeldung wird **automatisch als bezahlt markiert**. Der Veranstalter muss nichts mehr in PayPal nachsehen und nichts mehr abhaken.
+- Der Code muss nicht mehr von Hand als Nachricht eingetippt werden, die Zuordnung klappt von allein. Keine Verwechslungen, keine falschen Beträge.
+- Die Zahlungserinnerungen verstummen automatisch, wenn bezahlt ist, und der Gast bekommt eine Zahlungsbestätigung.
+- Rechtlich sauber, mit Käufer- und Verkäuferschutz.
+- Rückerstattungen lassen sich später ebenfalls über PayPal anstoßen.
+
+**Was dafür nötig ist:** Geschäftskonto mit einer App (Client-ID und Secret in die `.env`, nie in den Chat), eine öffentlich erreichbare HTTPS-Adresse für die Benachrichtigung von PayPal und etwas Entwicklungsaufwand. Testen geht in der PayPal-Sandbox ohne echtes Geld. Noch nicht gebaut, siehe auch den Abschnitt „Bezahlung".
+
 ## Was automatisch passiert
 
 | Wann | Was |
