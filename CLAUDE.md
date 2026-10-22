@@ -2,6 +2,14 @@
 
 Web-App (Node/Express, SQLite) für die Anmeldung zu geführten Pilztouren: Gäste melden sich an, der Server bestätigt, erinnert, führt Warteliste und löscht alte Daten. Der Veranstalter pflegt Termine und Zahlungen unter `/admin/`. Oberfläche und Texte sind auf **Deutsch**. Aufbau, Ablauf und Betrieb stehen in der `README.md`. Unabhängig vom Projekt TourPost.
 
+## Gehört zu TourPost
+
+Dieses Projekt (**Tourbuchung**, `~/Schreibtisch/tourbuchung`) und **TourPost** (`~/Schreibtisch/tourpost`, eigenes Repository `R13N3K3/tourpost`, eigene `CLAUDE.md`) gehören inhaltlich zusammen: Beide dienen demselben Veranstalter für seine Pilztouren. TourPost macht die Werbung (Videos als Instagram Reel, YouTube Short und auf TikTok), Tourbuchung nimmt die Anmeldungen und Zahlungen entgegen. Technisch sind sie **getrennt**: eigener Code, eigene Datenbank, eigene `.env`, eigener Port (Tourbuchung 3200, TourPost 3000), keine gemeinsamen Zugangsdaten.
+
+- TourPost soll später auf die Anmeldeseite hier verweisen (dort gibt es die Seite „Touren" als Platzhalter). Eine feste öffentliche Adresse dafür ist nötig, siehe die Betriebsabschnitte der `README.md`.
+- **Sicherheit bleibt getrennt:** Diese App ist bewusst öffentlich erreichbar (Passwort für `/admin/`, HTTPS Pflicht). TourPost hat keinen Zugangsschutz und darf **nie** über denselben Tunnel, dieselbe Domain oder denselben Proxy erreichbar sein. Beim Heimserver darf der Tunnel nur auf Port 3200 zeigen.
+- Änderungen, die beide betreffen (gemeinsamer Name des Veranstalters, Texte, Links), in beiden Projekten nachziehen und in der jeweils anderen `CLAUDE.md` vermerken.
+
 ## Befehle
 
 - Starten: `npm start` (Port 3200, `PORT` änderbar), Tests: `npm test` (Wegwerf-Datenbank, keine echten Mails).
