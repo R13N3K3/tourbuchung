@@ -1,40 +1,89 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 175" role="img" aria-label="Vier Pilze: Fliegenpilz, Steinpilz, Pfifferling und Parasol">
-  <!-- Waldboden -->
-  <ellipse cx="320" cy="158" rx="318" ry="14" fill="#efe6d8"/>
-  <g stroke="#9bb07a" stroke-width="3" stroke-linecap="round" fill="none">
-    <path d="M20 154 q4 -16 10 -22 M30 154 q-2 -12 -8 -18 M610 154 q4 -16 10 -22 M620 154 q-2 -12 -8 -18 M170 158 q3 -10 8 -14 M450 158 q3 -10 8 -14"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 640 215" role="img" aria-label="Pilze im Wald: Fliegenpilz, Steinpilz, Parasol und Pfifferlinge">
+  <defs>
+    <linearGradient id="rot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ee5a48"/><stop offset="1" stop-color="#c52f26"/></linearGradient>
+    <linearGradient id="braun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c47a3c"/><stop offset="1" stop-color="#8f4f22"/></linearGradient>
+    <linearGradient id="gelb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8c548"/><stop offset="1" stop-color="#e79a1c"/></linearGradient>
+    <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ecd7b4"/><stop offset="1" stop-color="#cdb184"/></linearGradient>
+    <linearGradient id="creme" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#eadfc8"/><stop offset=".45" stop-color="#fbf5e8"/><stop offset="1" stop-color="#e3d6bb"/></linearGradient>
+    <linearGradient id="weiss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf8"/><stop offset="1" stop-color="#e9e0d0"/></linearGradient>
+    <radialGradient id="boden" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#e8dcc6"/><stop offset="1" stop-color="#f5efe3"/></radialGradient>
+
+    <!-- Fliegenpilz: Fußpunkt bei (0,0), wächst nach oben -->
+    <g id="fliege">
+      <path d="M-11 0 Q-7 -26 -9 -48 L9 -48 Q7 -26 11 0Z" fill="url(#creme)" stroke="#d9c9a8" stroke-width="1.2"/>
+      <path d="M-14 -34 Q0 -28 14 -34 L12 -29 Q0 -23 -12 -29Z" fill="#fffaf0" stroke="#d9c9a8" stroke-width="1"/>
+      <path d="M-46 -47 A46 44 0 0 1 46 -47 Q0 -31 -46 -47Z" fill="url(#rot)"/>
+      <path d="M-34 -56 A38 34 0 0 1 -6 -80" stroke="#f79a8c" stroke-width="5" stroke-linecap="round" fill="none" opacity=".75"/>
+      <g fill="#fffaf0"><circle cx="-24" cy="-58" r="6"/><circle cx="2" cy="-72" r="7"/><circle cx="26" cy="-58" r="5.5"/><circle cx="-4" cy="-52" r="4"/><circle cx="-38" cy="-47" r="3.2"/><circle cx="38" cy="-47" r="3.4"/><circle cx="16" cy="-76" r="3"/></g>
+    </g>
+
+    <!-- Steinpilz -->
+    <g id="stein">
+      <path d="M-15 0 Q-24 -24 -12 -52 L12 -52 Q24 -24 15 0Z" fill="url(#creme)" stroke="#d9c9a8" stroke-width="1.2"/>
+      <g stroke="#d3c19d" stroke-width="1" fill="none" opacity=".7"><path d="M-7 -8 Q-3 -24 -6 -44 M2 -6 Q6 -24 3 -46 M9 -10 Q11 -26 8 -42"/></g>
+      <path d="M-48 -50 A48 40 0 0 1 48 -50 Q0 -36 -48 -50Z" fill="url(#braun)"/>
+      <path d="M-36 -56 A40 32 0 0 1 -4 -78" stroke="#e5a96a" stroke-width="7" stroke-linecap="round" fill="none" opacity=".7"/>
+      <path d="M-46 -49 Q0 -33 46 -49" stroke="#f6ecd8" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <!-- Pfifferling -->
+    <g id="pfiff">
+      <path d="M-34 -42 Q-28 -52 -17 -47 Q-9 -55 0 -48 Q9 -55 17 -47 Q28 -52 34 -42 Q28 -30 11 -22 Q9 0 5 0 L-5 0 Q-9 0 -11 -22 Q-28 -30 -34 -42Z" fill="url(#gelb)"/>
+      <path d="M-28 -44 Q0 -54 28 -44" stroke="#fbdc87" stroke-width="4" fill="none" stroke-linecap="round" opacity=".85"/>
+      <g stroke="#d28a14" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".65"><path d="M-8 -22 Q-18 -30 -26 -40 M0 -22 L0 -40 M8 -22 Q18 -30 26 -40"/></g>
+    </g>
+
+    <!-- Parasol (hoch) -->
+    <g id="parasol">
+      <path d="M-5 0 Q-4 -40 -4.5 -92 L4.5 -92 Q4 -40 5 0Z" fill="url(#creme)" stroke="#d6c7a8" stroke-width="1.2"/>
+      <g stroke="#cdb990" stroke-width="1" opacity=".7"><path d="M-4 -70 L4 -66 M-4 -58 L4 -54 M-4 -46 L4 -42 M-4 -34 L4 -30"/></g>
+      <path d="M-11 -64 Q0 -58 11 -64 L11 -57 Q0 -50 -11 -57Z" fill="#f8f1e1" stroke="#d6c7a8" stroke-width="1.2"/>
+      <path d="M-54 -86 A54 36 0 0 1 54 -86 Q0 -70 -54 -86Z" fill="url(#sand)"/>
+      <ellipse cx="0" cy="-118" rx="15" ry="8" fill="#8c6a43"/>
+      <g fill="#a98557"><circle cx="-30" cy="-100" r="4"/><circle cx="-12" cy="-110" r="3.4"/><circle cx="14" cy="-107" r="4.4"/><circle cx="32" cy="-96" r="3.6"/><circle cx="-42" cy="-90" r="3"/><circle cx="4" cy="-94" r="3"/><circle cx="-20" cy="-90" r="3"/><circle cx="24" cy="-88" r="3"/></g>
+    </g>
+
+    <!-- kleiner Champignon -->
+    <g id="champi">
+      <path d="M-6 0 Q-5 -14 -6 -24 L6 -24 Q5 -14 6 0Z" fill="url(#weiss)" stroke="#e0d5bd" stroke-width="1"/>
+      <path d="M-24 -23 A24 22 0 0 1 24 -23 Q0 -14 -24 -23Z" fill="url(#weiss)" stroke="#e0d5bd" stroke-width="1"/>
+      <path d="M-16 -30 A18 14 0 0 1 -2 -42" stroke="#fff" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".9"/>
+    </g>
+  </defs>
+
+  <!-- Boden -->
+  <ellipse cx="320" cy="198" rx="326" ry="18" fill="url(#boden)"/>
+  <ellipse cx="150" cy="156" rx="170" ry="10" fill="#f1e8d6" opacity=".9"/>
+  <ellipse cx="470" cy="152" rx="190" ry="9" fill="#f1e8d6" opacity=".9"/>
+  <!-- Moos -->
+  <g fill="#a9bd84" opacity=".7"><ellipse cx="205" cy="194" rx="26" ry="5"/><ellipse cx="445" cy="193" rx="30" ry="5"/><ellipse cx="45" cy="190" rx="20" ry="4"/><ellipse cx="610" cy="188" rx="18" ry="4"/></g>
+
+  <!-- hintere Reihe: kleiner, blasser -->
+  <g opacity=".7">
+    <use href="#stein" transform="translate(52 158) scale(.5)"/>
+    <use href="#pfiff" transform="translate(172 160) scale(.5)"/>
+    <use href="#fliege" transform="translate(338 158) scale(.5)"/>
+    <use href="#stein" transform="translate(596 156) scale(.46)"/>
   </g>
 
-  <!-- Fliegenpilz -->
-  <g>
-    <path d="M78 104 Q76 150 72 152 L108 152 Q104 150 102 104Z" fill="#f7efe1" stroke="#e2d3b8" stroke-width="2"/>
-    <ellipse cx="90" cy="108" rx="18" ry="5" fill="#eadfc9"/>
-    <path d="M36 102 A54 52 0 0 1 144 102 Q90 118 36 102Z" fill="#d63a2e"/>
-    <path d="M50 84 A44 40 0 0 1 90 54" stroke="#ef7a6e" stroke-width="5" stroke-linecap="round" fill="none" opacity=".7"/>
-    <g fill="#fffaf0"><circle cx="68" cy="82" r="6"/><circle cx="96" cy="64" r="7"/><circle cx="120" cy="86" r="5.5"/><circle cx="92" cy="92" r="4"/><circle cx="55" cy="96" r="3.5"/><circle cx="130" cy="98" r="3.5"/></g>
-  </g>
+  <!-- vordere Reihe: unterschiedlich hoch -->
+  <use href="#fliege" transform="translate(112 198) scale(1.05)"/>
+  <use href="#champi" transform="translate(190 200) scale(.7)"/>
+  <use href="#stein" transform="translate(262 202) scale(.85)"/>
+  <use href="#parasol" transform="translate(392 200) scale(1.12)"/>
+  <use href="#pfiff" transform="translate(486 204) scale(.82)"/>
+  <use href="#pfiff" transform="translate(528 206) scale(.6)"/>
+  <use href="#fliege" transform="translate(596 202) scale(.52)"/>
+  <use href="#champi" transform="translate(36 204) scale(.5)"/>
+  <use href="#fliege" transform="translate(318 206) scale(.3)"/>
 
-  <!-- Steinpilz -->
-  <g>
-    <path d="M222 104 Q214 148 220 152 L260 152 Q266 148 258 104Z" fill="#f0e3cb" stroke="#dccaa8" stroke-width="2"/>
-    <path d="M188 106 A52 46 0 0 1 292 106 Q240 122 188 106Z" fill="#a9652e"/>
-    <path d="M200 92 A42 36 0 0 1 244 64" stroke="#d29552" stroke-width="7" stroke-linecap="round" fill="none" opacity=".75"/>
-    <path d="M190 108 Q240 124 290 108" stroke="#f4ead6" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Gras und Laub im Vordergrund -->
+  <g stroke="#8fa56b" stroke-width="2.6" stroke-linecap="round" fill="none">
+    <path d="M14 206 q3 -14 9 -20 M22 206 q-1 -11 -7 -17 M232 207 q3 -12 8 -17 M312 208 q-2 -10 -7 -15 M452 207 q3 -13 9 -18 M572 208 q3 -11 8 -16 M626 207 q-2 -12 -8 -17 M154 208 q2 -9 6 -13"/>
   </g>
-
-  <!-- Pfifferling -->
   <g>
-    <path d="M348 90 Q392 74 436 90 Q428 108 410 120 Q408 152 402 152 L382 152 Q376 152 374 120 Q356 108 348 90Z" fill="#f3b62f"/>
-    <path d="M352 92 Q392 80 432 92" stroke="#f9d672" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>
-    <g stroke="#d9951b" stroke-width="2" stroke-linecap="round" fill="none" opacity=".7"><path d="M378 122 q-12 -10 -20 -24 M392 124 q0 -14 0 -30 M406 122 q12 -10 20 -24"/></g>
-  </g>
-
-  <!-- Parasol -->
-  <g>
-    <rect x="535" y="74" width="10" height="78" rx="5" fill="#eadfc7" stroke="#d6c7a8" stroke-width="1.5"/>
-    <path d="M526 100 Q540 108 554 100 L554 106 Q540 114 526 106Z" fill="#f6efe0" stroke="#d6c7a8" stroke-width="1.5"/>
-    <path d="M484 80 A56 38 0 0 1 596 80 Q540 94 484 80Z" fill="#e3cdab"/>
-    <ellipse cx="540" cy="46" rx="14" ry="8" fill="#8c6a43"/>
-    <g fill="#a98557"><circle cx="512" cy="66" r="4"/><circle cx="535" cy="58" r="3.5"/><circle cx="562" cy="62" r="4.5"/><circle cx="580" cy="74" r="3.5"/><circle cx="500" cy="76" r="3"/><circle cx="548" cy="76" r="3"/><circle cx="524" cy="80" r="3"/></g>
+    <path d="M356 207 q8 -10 18 -6 q-4 10 -18 6Z" fill="#e9a35f"/>
+    <path d="M70 208 q9 -9 17 -4 q-5 9 -17 4Z" fill="#d9763a"/>
+    <path d="M552 209 q8 -8 16 -4 q-4 8 -16 4Z" fill="#e9a35f"/>
   </g>
 </svg>
