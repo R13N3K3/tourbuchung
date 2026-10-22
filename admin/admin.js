@@ -48,10 +48,17 @@ async function laden() {
   const d = await api('GET', '/api/admin/termine');
   $('ort').value ||= d.standard.ort;
   $('preis').value ||= d.standard.preis;
-  $('termine').innerHTML = d.termine.length ? d.termine.map(terminKarte).join('') : '<p class="dim">Noch keine Termine. Lege oben den ersten an.</p>';
+  const sichtbar = d.termine.filter(t => !t.abgesagt || $('zeigeAbgesagte').checked);
+  const versteckt = d.termine.length - sichtbar.length;
+  $('termine').innerHTML = sichtbar.length ? sichtbar.map(terminKarte).join('')
+    : '<p class="dim">Keine Termine. Lege oben einen an.</p>';
+  $('zeigeAbgesagte').closest('label').hidden = !d.termine.some(t => t.abgesagt);
+  if (versteckt) $('termine').insertAdjacentHTML('beforeend', `<p class="dim small">${versteckt} abgesagte${versteckt === 1 ? 'r Termin ist' : ' Termine sind'} ausgeblendet.</p>`);
   const post = await api('GET', '/api/admin/postausgang');
   $('post').innerHTML = post.length ? post.map(p => `<details><summary>${esc(fmt(p.zeit))} · ${esc(p.an)} · ${esc(p.betreff)} <span class="badge ${p.status === 'fehler' ? 'err' : p.status === 'nur_protokoll' ? 'warn' : ''}">${p.status === 'nur_protokoll' ? 'nur Protokoll' : p.status}</span></summary><pre>${esc(p.text)}${p.fehler ? '\n\nFehler: ' + esc(p.fehler) : ''}</pre></details>`).join('') : '<p class="dim small">Noch keine Mails.</p>';
 }
+
+$('zeigeAbgesagte').addEventListener('change', () => laden().catch(err => meldung(err.message)));
 
 $('terminForm').addEventListener('submit', async e => {
   e.preventDefault();
