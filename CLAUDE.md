@@ -9,6 +9,15 @@ Web-App (Node/Express, SQLite) für die Anmeldung zu geführten Pilztouren: Gäs
 - Alten Server über die PID auf dem Port beenden (`ss -ltnp`), **nicht** mit `pkill`.
 - Ohne `SMTP_HOST` landen Mails nur im Postausgang der Verwaltung. Zum Ausprobieren eine Wegwerf-Datenbank nehmen (`DB_FILE=…`), nie mit echten Daten testen.
 
+## Bei Änderungen an der Oberfläche
+
+Ändert sich etwas, das man sieht (HTML, CSS, Texte, `public/`, `admin/`): die Screenshots in `docs/screenshots/` neu aufnehmen (`anmeldung-oben`, `anmeldung-formular`, `bestaetigung`, `verwaltung`, `storno`), die `README.md` (Abschnitt „Vorschau") prüfen und alles zusammen committen.
+
+- Mit **Firefox headless**, Handy-Breite 390 px: `firefox --headless --no-remote --profile <leeres-Profil> --window-size=390,<Höhe> --screenshot <absoluter-Pfad>.png <URL>`.
+- **Nie mit echten Daten.** Eine Kopie von `server/`, `public/`, `admin/`, `package.json` und `node_modules` in ein Wegwerf-Verzeichnis legen, mit `DB_FILE=…` und anderem Port starten und Beispieldaten über die API anlegen (erfundene Namen, `example.org`). `VERANSTALTER` auf einen erfundenen Namen setzen.
+- Nur in der Wegwerf-Kopie: `adminAuth` überspringen und `fetch` durch **synchrones** `XMLHttpRequest` ersetzen (Firefox macht das Bild, bevor `fetch` fertig ist). Das nie ins echte Projekt übernehmen.
+- Die Bestätigungsseite erst nach dem Absenden sichtbar: in der Kopie `zeigeErgebnis(...)` direkt aufrufen. Das Bild ansehen und prüfen, bevor es committet wird.
+
 ## Todo
 
 - **Zahlung automatisch erkennen (PayPal Checkout).** Kosten: PayPal-Geschäftskonto (soweit bekannt ohne Grundgebühr) und pro Zahlung etwa 3 % plus Festbetrag, die der Veranstalter trägt (bei 40 € grob 1,50 €; Zahlen **nicht geprüft**, vor der Umsetzung bei PayPal nachsehen). Vorteil: Der Gast zahlt direkt auf der Seite, PayPal meldet die Zahlung per Webhook (Orders API, `PAYMENT.CAPTURE.COMPLETED`, Zuordnung über den Anmeldecode als `custom_id`), die Anmeldung wird automatisch als bezahlt markiert. Der Handabgleich entfällt, die Zahlungserinnerungen enden von selbst, der Gast bekommt eine Bestätigung, rechtlich sauber mit Käufer- und Verkäuferschutz. Dafür nötig: Client-ID und Secret in der `.env` (nie in den Chat), öffentliche HTTPS-Adresse für den Webhook, Test in der Sandbox. Heute zahlen die Gäste per „PayPal Freunde" und der Veranstalter hakt von Hand ab (verstößt für bezahlte Leistungen gegen die PayPal-Regeln, kein Käuferschutz).

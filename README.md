@@ -2,6 +2,20 @@
 
 Kleine Web-App für geführte Pilztouren. Gäste melden sich selbst an, der Server bestätigt, erinnert und kümmert sich um Warteliste und Absagen. Der Veranstalter muss nur noch Termine anlegen und Zahlungen abhaken. Entstanden nach dem Vorbild des bisherigen Google-Formulars (dieselben Felder und Texte, aber ohne Barzahlung), unabhängig von TourPost.
 
+## Vorschau
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/anmeldung-oben.png" width="170" alt="Anmeldeseite"><br><sub>Anmeldeseite</sub></td>
+    <td align="center"><img src="docs/screenshots/anmeldung-formular.png" width="170" alt="Anmeldeformular mit Terminen"><br><sub>Formular mit Terminen</sub></td>
+    <td align="center"><img src="docs/screenshots/bestaetigung.png" width="170" alt="Bestätigung nach der Anmeldung"><br><sub>Bestätigung mit Code</sub></td>
+    <td align="center"><img src="docs/screenshots/verwaltung.png" width="170" alt="Verwaltung für den Veranstalter"><br><sub>Verwaltung</sub></td>
+    <td align="center"><img src="docs/screenshots/storno.png" width="170" alt="Stornoseite"><br><sub>Stornolink aus der Mail</sub></td>
+  </tr>
+</table>
+
+Die Bilder zeigen Beispieldaten (erfundene Namen), keine echten Gäste.
+
 ## So funktioniert es (kurz und einfach)
 
 **Für die Gäste**
