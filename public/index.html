@@ -10,42 +10,71 @@
 </head>
 <body>
 <main>
-  <h1>Pilztour mit <span id="veranstalter">Eduard</span> 🍄</h1>
-  <p class="dim">Geführte Pilzexkursion in den Harburger Bergen. Anmeldung in einer Minute, die Bestätigung kommt per E-Mail.</p>
 
-  <img class="hero" src="/pilze.svg" alt="Vier Pilze: Fliegenpilz, Steinpilz, Pfifferling und Parasol" width="640" height="175">
+  <header class="top">
+    <p class="eyebrow">🌲 Geführte Pilzexkursion</p>
+    <h1>Pilztour mit <span id="veranstalter">Eduard</span> 🍄</h1>
+    <p class="lead">Gemeinsam durch die Harburger Berge: Pilze finden, sicher bestimmen und verstehen, was im Wald wächst.</p>
+    <div class="chips">
+      <span class="chip">📍 Harburger Berge</span>
+      <span class="chip">⏱ 3–4 Stunden</span>
+      <span class="chip">💶 40 € pro Person</span>
+    </div>
+    <img class="hero" src="/pilze.svg" alt="Vier Pilze: Fliegenpilz, Steinpilz, Pfifferling und Parasol" width="640" height="175">
+  </header>
 
-  <section class="card">
-    <h2>Das erwartet dich</h2>
-    <ul class="facts">
-      <li>Etwa 3 bis 4 Stunden unterwegs (ca. 5.000 bis 7.000 Schritte).</li>
-      <li>Verschiedene Pilzarten, Bestimmungsmerkmale und Übungen zur sicheren Bestimmung.</li>
-      <li>Dazu Heilpilze, Pilzzucht und die Rolle der Pilze im Ökosystem.</li>
-      <li>Mitbringen: <strong>Korb oder Obstnetz und Messer</strong> (Pflicht), festes Schuhwerk, warme Kleidung, bei Regen Regensachen.</li>
-      <li>Preis: <strong>40 € pro Person</strong>, per PayPal „Freunde“ (keine Barzahlung). Hunde und Kinder unter 6 Jahren sind kostenfrei.</li>
+  <section class="block">
+    <h2>✨ Das erwartet dich</h2>
+    <div class="features">
+      <div class="feature"><span class="ico">🍄</span><div><strong>Pilze kennenlernen</strong><span>Verschiedene Arten und ihre Bestimmungsmerkmale.</span></div></div>
+      <div class="feature"><span class="ico">🔍</span><div><strong>Sicher bestimmen</strong><span>Übungen, damit du im Zweifel richtig entscheidest.</span></div></div>
+      <div class="feature"><span class="ico">🌿</span><div><strong>Heilpilze &amp; Pilzzucht</strong><span>Was Pilze können und wie man sie selbst zieht.</span></div></div>
+      <div class="feature"><span class="ico">🌳</span><div><strong>Pilze im Ökosystem</strong><span>Welche Rolle sie im Wald spielen.</span></div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>🎒 Gut zu wissen</h2>
+    <ul class="checklist">
+      <li><span class="ico">🧺</span><span><strong>Korb oder Obstnetz</strong> und <strong>Messer</strong> sind Pflicht.</span></li>
+      <li><span class="ico">👟</span><span>Festes Schuhwerk und warme Kleidung, bei Regen Regensachen.</span></li>
+      <li><span class="ico">🥾</span><span>Etwa 5.000 bis 7.000 Schritte, das sind 3 bis 4 Stunden.</span></li>
+      <li><span class="ico">📍</span><span>Treffpunkt: Talweg, direkt an der S-Bahn-Station Neuwiedenthal. Parken ist möglich.</span></li>
+      <li><span class="ico">🐕</span><span>Hunde und Kinder unter 6 Jahren sind kostenfrei.</span></li>
+      <li><span class="ico">💶</span><span><strong>40 € pro Person</strong>, bezahlt per PayPal „Freunde“ (keine Barzahlung).</span></li>
     </ul>
   </section>
 
-  <form id="form" class="card" novalidate>
-    <h2>Anmeldung</h2>
+  <section class="block">
+    <h2>🧭 So läuft die Anmeldung</h2>
+    <ol class="ablauf">
+      <li><span class="nr">1</span><span>Termin wählen und das Formular ausfüllen.</span></li>
+      <li><span class="nr">2</span><span>Bestätigung per E-Mail mit allen Details.</span></li>
+      <li><span class="nr">3</span><span>Per PayPal „Freunde“ bezahlen, mit deinem Code als Nachricht.</span></li>
+      <li><span class="nr">4</span><span>Ab in den Wald! 🌲 Kurz vorher gibt es eine Erinnerung.</span></li>
+    </ol>
+  </section>
 
-    <label for="name">Vor- und Nachname</label>
+  <form id="form" class="card form" novalidate>
+    <h2>📝 Jetzt anmelden</h2>
+
+    <label for="name">👤 Vor- und Nachname</label>
     <input type="text" id="name" autocomplete="name" required maxlength="100">
 
-    <label for="email">E-Mail</label>
+    <label for="email">✉️ E-Mail</label>
     <input type="email" id="email" autocomplete="email" required maxlength="150">
 
-    <label for="telefon">Telefonnummer</label>
+    <label for="telefon">📞 Telefonnummer</label>
     <input type="tel" id="telefon" autocomplete="tel" required maxlength="40">
 
-    <label for="personen">Für wie viele Personen möchtest du reservieren?</label>
+    <label for="personen">👥 Für wie viele Personen?</label>
     <select id="personen"></select>
 
-    <label id="terminLabel">Wann möchtest du mitkommen?</label>
+    <label id="terminLabel">📅 Wann möchtest du mitkommen?</label>
     <div id="termine" role="radiogroup" aria-labelledby="terminLabel"><p class="dim">Termine werden geladen …</p></div>
     <p class="dim small">Kein passender Termin dabei? Schreib uns in der Nachricht deinen Wunschtermin.</p>
 
-    <label for="nachricht">Nachricht (optional)</label>
+    <label for="nachricht">💬 Nachricht (optional)</label>
     <textarea id="nachricht" maxlength="1000"></textarea>
 
     <input type="text" id="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -54,10 +83,10 @@
       <span>Ich habe die <a href="/datenschutz.html">Datenschutzerklärung</a> gelesen. Meine Angaben werden zur Organisation der Tour gespeichert und per E-Mail verwendet.</span></label>
 
     <div id="fehler" class="msg err" hidden></div>
-    <p><button type="submit" id="senden">Verbindlich anmelden</button></p>
+    <p><button type="submit" id="senden" class="big">🍄 Verbindlich anmelden</button></p>
   </form>
 
-  <section id="ergebnis" class="card" hidden></section>
+  <section id="ergebnis" class="card result" hidden></section>
 
   <footer class="dim small"><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a></footer>
 </main>

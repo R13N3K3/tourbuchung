@@ -24,7 +24,7 @@ function zeile(b, vorbei) {
     <td><strong>${esc(b.name)}</strong> <span class="badge ${cls}">${label}</span><br>
       <span class="dim small">${b.personen} P. · <a href="tel:${esc(b.telefon)}">${esc(b.telefon)}</a> · <a href="mailto:${esc(b.email)}">${esc(b.email)}</a><br>Code ${esc(b.code)}${b.nachricht ? `<br>„${esc(b.nachricht)}"` : ''}</span></td>
     <td class="row">
-      ${b.status === 'bestaetigt' ? `<button class="small ${b.bezahlt ? '' : 'ghost'}" data-act="bezahlt" data-id="${b.id}" data-val="${b.bezahlt ? 0 : 1}">${b.bezahlt ? 'bezahlt ✓' : 'bezahlt?'}</button>` : ''}
+      ${b.status === 'bestaetigt' ? `<button class="small ${b.bezahlt ? '' : 'ghost'}" data-act="bezahlt" data-id="${b.id}" data-val="${b.bezahlt ? 0 : 1}">${b.bezahlt ? '✅ bezahlt' : '💶 bezahlt?'}</button>` : ''}
       <button class="small danger" data-act="storno" data-id="${b.id}">Storno</button>
       ${vorbei ? `<button class="small ghost" data-act="loeschen" data-id="${b.id}">Daten löschen</button>` : ''}
     </td></tr>`;
@@ -36,9 +36,9 @@ function terminKarte(t) {
   const summe = t.buchungen.filter(b => b.status === 'bestaetigt' && b.bezahlt).reduce((s, b) => s + b.personen * t.preis, 0);
   const offen = t.buchungen.filter(b => b.status === 'bestaetigt' && !b.bezahlt).reduce((s, b) => s + b.personen * t.preis, 0);
   return `<section class="card" style="${t.abgesagt || vorbei ? 'opacity:.75' : ''}">
-    <div class="row"><strong>${esc(fmt(t.start))}</strong>
+    <div class="row"><strong>📅 ${esc(fmt(t.start))}</strong>
       ${t.abgesagt ? '<span class="badge err">abgesagt</span>' : vorbei ? '<span class="badge">vorbei</span>' : ''}</div>
-    <div class="dim small">${esc(t.ort)} · ${belegt}/${t.kapazitaet} belegt · ${t.preis} € p. P. · eingenommen ${summe} €, offen ${offen} €</div>
+    <div class="dim small">📍 ${esc(t.ort)} · 👥 ${belegt}/${t.kapazitaet} belegt · ${t.preis} € p. P. · eingenommen ${summe} €, offen ${offen} €</div>
     ${t.buchungen.length ? `<table>${t.buchungen.map(b => zeile(b, vorbei)).join('')}</table>` : '<p class="dim small">Noch keine Anmeldungen.</p>'}
     ${t.abgesagt ? '' : `<p><button class="small danger" data-act="absage" data-id="${t.id}">Termin absagen (alle werden benachrichtigt)</button></p>`}
   </section>`;

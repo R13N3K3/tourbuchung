@@ -15,22 +15,34 @@ async function laden() {
   zeichneTermine();
 }
 
+const tagDatum = iso => {
+  const d = new Date(iso);
+  return {
+    tag: d.getDate(),
+    mon: d.toLocaleString('de-DE', { month: 'short' }).replace('.', ''),
+    wt: d.toLocaleString('de-DE', { weekday: 'short' }).replace('.', ''),
+    zeit: d.toLocaleString('de-DE', { hour: '2-digit', minute: '2-digit' }),
+  };
+};
+
 function zeichneTermine() {
   const box = $('termine');
   if (!termine.length) {
-    box.innerHTML = '<p class="dim">Zurzeit ist kein Termin geplant. Schreib uns gern über die Nachricht, wir melden uns.</p>';
+    box.innerHTML = '<p class="dim">Zurzeit ist kein Termin geplant. Schreib uns gern über die Nachricht, wir melden uns. 🍂</p>';
     return;
   }
   const n = Number($('personen').value) || 1;
   const gewaehlt = document.querySelector('input[name=termin]:checked')?.value;
   box.innerHTML = termine.map(t => {
     const passt = t.frei >= n;
-    const info = t.frei === 0 ? '<span class="badge warn">ausgebucht, Warteliste</span>'
-      : passt ? `<span class="badge">${t.frei} ${t.frei === 1 ? 'Platz' : 'Plätze'} frei</span>`
-      : `<span class="badge warn">nur noch ${t.frei} frei, sonst Warteliste</span>`;
+    const d = tagDatum(t.start);
+    const info = t.frei === 0 ? '<span class="badge warn">🕒 ausgebucht, Warteliste</span>'
+      : passt ? `<span class="badge">✅ ${t.frei} ${t.frei === 1 ? 'Platz' : 'Plätze'} frei</span>`
+      : `<span class="badge warn">⚠️ nur noch ${t.frei} frei, sonst Warteliste</span>`;
     return `<label class="termin ${passt ? '' : 'voll'}">
       <input type="radio" name="termin" value="${t.id}" ${String(t.id) === gewaehlt ? 'checked' : ''}>
-      <span><strong>${esc(fmt(t.start))}</strong><span class="dim small">${esc(t.ort)}</span><br>${info}</span></label>`;
+      <span class="datum"><span class="mon">${esc(d.mon)}</span><span class="tag">${d.tag}</span><span class="wt">${esc(d.wt)}</span></span>
+      <span class="info"><strong>${esc(d.zeit)} Uhr</strong><span class="dim small">📍 ${esc(t.ort)}</span><br>${info}</span></label>`;
   }).join('');
 }
 $('personen').addEventListener('change', zeichneTermine);
@@ -69,15 +81,18 @@ $('form').addEventListener('submit', async e => {
 
 function zeigeErgebnis(d) {
   const warteliste = d.status === 'warteliste';
-  const pay = d.paypal ? `<p>PayPal „Freunde“: <a href="https://paypal.me/${encodeURIComponent(d.paypal)}/${d.betrag}EUR">paypal.me/${esc(d.paypal)}/${d.betrag}EUR</a><br>Bitte gib deinen Code <strong>${esc(d.code)}</strong> als Nachricht an.</p>` : '';
+  const pay = d.paypal
+    ? `<p><a class="btn" href="https://paypal.me/${encodeURIComponent(d.paypal)}/${d.betrag}EUR">💸 ${d.betrag} € per PayPal „Freunde“ zahlen</a><br><span class="dim small">Bitte gib deinen Code als Nachricht an.</span></p>`
+    : '';
   $('ergebnis').innerHTML = warteliste
-    ? `<h2>Du stehst auf der Warteliste</h2>
-       <p>Für ${esc(fmt(d.termin.start))} sind gerade nicht genug Plätze frei. Sobald welche frei werden, rückst du nach und bekommst sofort eine Mail. Bezahlen musst du bis dahin nichts.</p>
-       <p class="dim">Dein Code: <strong>${esc(d.code)}</strong></p>`
-    : `<h2>Angemeldet ✓</h2>
+    ? `<span class="big-emoji">🕒</span><h2>Du stehst auf der Warteliste</h2>
+       <p>Für <strong>${esc(fmt(d.termin.start))}</strong> sind gerade nicht genug Plätze frei. Sobald welche frei werden, rückst du nach und bekommst sofort eine Mail. Bezahlen musst du bis dahin nichts.</p>
+       <p class="dim small">Dein Code</p><span class="code">${esc(d.code)}</span>`
+    : `<span class="big-emoji">🎉</span><h2>Angemeldet!</h2>
        <p>Dein Platz für <strong>${esc(fmt(d.termin.start))}</strong> ist reserviert. Die Bestätigung mit allen Details kommt per E-Mail (schau auch im Spam-Ordner nach).</p>
-       <p>Bitte zahle <strong>${d.betrag} €</strong> per PayPal „Freunde“, Barzahlung vor Ort ist nicht möglich.</p>${pay}
-       <p class="dim">Dein Code: <strong>${esc(d.code)}</strong></p>`;
+       <p>Bitte zahle <strong>${d.betrag} €</strong> per PayPal „Freunde“ (keine Barzahlung).</p>${pay}
+       <p class="dim small">Dein Code</p><span class="code">${esc(d.code)}</span>
+       <p class="dim small">Bis bald im Wald! 🌲🍄</p>`;
   $('form').hidden = true;
   $('ergebnis').hidden = false;
   $('ergebnis').scrollIntoView({ behavior: 'smooth' });
