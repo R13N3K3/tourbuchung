@@ -51,3 +51,4 @@ a { color: var(--accent); }
 .ph { background: #fff0a0; color: #2b2622; padding: 0 4px; border-radius: 4px; }
 .legal h2 { margin-top: 22px; }
 .legal p, .legal li { line-height: 1.55; }
+.hero { display: block; width: 100%; height: auto; margin: 14px 0 4px; }

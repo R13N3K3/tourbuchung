@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 175" role="img" aria-label="Vier Pilze: Fliegenpilz, Steinpilz, Pfifferling und Parasol">
+  <!-- Waldboden -->
+  <ellipse cx="320" cy="158" rx="318" ry="14" fill="#efe6d8"/>
+  <g stroke="#9bb07a" stroke-width="3" stroke-linecap="round" fill="none">
+    <path d="M20 154 q4 -16 10 -22 M30 154 q-2 -12 -8 -18 M610 154 q4 -16 10 -22 M620 154 q-2 -12 -8 -18 M170 158 q3 -10 8 -14 M450 158 q3 -10 8 -14"/>
+  </g>
+
+  <!-- Fliegenpilz -->
+  <g>
+    <path d="M78 104 Q76 150 72 152 L108 152 Q104 150 102 104Z" fill="#f7efe1" stroke="#e2d3b8" stroke-width="2"/>
+    <ellipse cx="90" cy="108" rx="18" ry="5" fill="#eadfc9"/>
+    <path d="M36 102 A54 52 0 0 1 144 102 Q90 118 36 102Z" fill="#d63a2e"/>
+    <path d="M50 84 A44 40 0 0 1 90 54" stroke="#ef7a6e" stroke-width="5" stroke-linecap="round" fill="none" opacity=".7"/>
+    <g fill="#fffaf0"><circle cx="68" cy="82" r="6"/><circle cx="96" cy="64" r="7"/><circle cx="120" cy="86" r="5.5"/><circle cx="92" cy="92" r="4"/><circle cx="55" cy="96" r="3.5"/><circle cx="130" cy="98" r="3.5"/></g>
+  </g>
+
+  <!-- Steinpilz -->
+  <g>
+    <path d="M222 104 Q214 148 220 152 L260 152 Q266 148 258 104Z" fill="#f0e3cb" stroke="#dccaa8" stroke-width="2"/>
+    <path d="M188 106 A52 46 0 0 1 292 106 Q240 122 188 106Z" fill="#a9652e"/>
+    <path d="M200 92 A42 36 0 0 1 244 64" stroke="#d29552" stroke-width="7" stroke-linecap="round" fill="none" opacity=".75"/>
+    <path d="M190 108 Q240 124 290 108" stroke="#f4ead6" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Pfifferling -->
+  <g>
+    <path d="M348 90 Q392 74 436 90 Q428 108 410 120 Q408 152 402 152 L382 152 Q376 152 374 120 Q356 108 348 90Z" fill="#f3b62f"/>
+    <path d="M352 92 Q392 80 432 92" stroke="#f9d672" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>
+    <g stroke="#d9951b" stroke-width="2" stroke-linecap="round" fill="none" opacity=".7"><path d="M378 122 q-12 -10 -20 -24 M392 124 q0 -14 0 -30 M406 122 q12 -10 20 -24"/></g>
+  </g>
+
+  <!-- Parasol -->
+  <g>
+    <rect x="535" y="74" width="10" height="78" rx="5" fill="#eadfc7" stroke="#d6c7a8" stroke-width="1.5"/>
+    <path d="M526 100 Q540 108 554 100 L554 106 Q540 114 526 106Z" fill="#f6efe0" stroke="#d6c7a8" stroke-width="1.5"/>
+    <path d="M484 80 A56 38 0 0 1 596 80 Q540 94 484 80Z" fill="#e3cdab"/>
+    <ellipse cx="540" cy="46" rx="14" ry="8" fill="#8c6a43"/>
+    <g fill="#a98557"><circle cx="512" cy="66" r="4"/><circle cx="535" cy="58" r="3.5"/><circle cx="562" cy="62" r="4.5"/><circle cx="580" cy="74" r="3.5"/><circle cx="500" cy="76" r="3"/><circle cx="548" cy="76" r="3"/><circle cx="524" cy="80" r="3"/></g>
+  </g>
+</svg>
