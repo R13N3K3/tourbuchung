@@ -70,6 +70,18 @@ test('Überbuchung geht auf die Warteliste, Storno lässt nachrücken', async ()
   assert.equal((await fetch(base + '/api/storno/xyz')).status, 404);
 });
 
+test('Zahlungserinnerung kommt einmal nach 48 Stunden, wenn nicht bezahlt', async () => {
+  const vorher = mails().length;
+  assert.equal(await jobs.run(new Date(Date.now() + 1 * 864e5)), 0);   // zu früh
+  assert.equal(await jobs.run(new Date(Date.now() + 3 * 864e5)), 1);
+  assert.equal(await jobs.run(new Date(Date.now() + 3 * 864e5)), 0);
+  const m = mails().at(-1);
+  assert.match(m.betreff, /Zahlung offen/);
+  assert.match(m.text, /paypal\.me\/beispiel/);
+  assert.doesNotMatch(m.text, /bar vor Ort|Vorauszahlung ist nicht nötig/);
+  assert.equal(mails().length, vorher + 1);
+});
+
 test('Erinnerung und Nachbereitung werden genau einmal verschickt', async () => {
   const vorher = mails().length;
   assert.equal(await jobs.run(new Date(Date.now() + 9 * 864e5)), 1);   // ca. 1 Tag vor der Tour

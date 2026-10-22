@@ -76,7 +76,7 @@ function zeigeErgebnis(d) {
        <p class="dim">Dein Code: <strong>${esc(d.code)}</strong></p>`
     : `<h2>Angemeldet ✓</h2>
        <p>Dein Platz für <strong>${esc(fmt(d.termin.start))}</strong> ist reserviert. Die Bestätigung mit allen Details kommt per E-Mail (schau auch im Spam-Ordner nach).</p>
-       <p>Bezahlt wird bar vor Ort oder per PayPal, <strong>${d.betrag} €</strong> insgesamt. Vorauszahlung ist nicht nötig.</p>${pay}
+       <p>Bitte zahle <strong>${d.betrag} €</strong> per PayPal, Barzahlung vor Ort ist nicht möglich.</p>${pay}
        <p class="dim">Dein Code: <strong>${esc(d.code)}</strong></p>`;
   $('form').hidden = true;
   $('ergebnis').hidden = false;

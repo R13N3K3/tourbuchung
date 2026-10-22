@@ -1,6 +1,6 @@
 # Pilztour – Anmeldung und Verwaltung
 
-Kleine Web-App für geführte Pilztouren. Gäste melden sich selbst an, der Server bestätigt, erinnert und kümmert sich um Warteliste und Absagen. Der Veranstalter muss nur noch Termine anlegen und Zahlungen abhaken. Entstanden nach dem Vorbild des bisherigen Google-Formulars (dieselben Felder und Texte), unabhängig von TourPost.
+Kleine Web-App für geführte Pilztouren. Gäste melden sich selbst an, der Server bestätigt, erinnert und kümmert sich um Warteliste und Absagen. Der Veranstalter muss nur noch Termine anlegen und Zahlungen abhaken. Entstanden nach dem Vorbild des bisherigen Google-Formulars (dieselben Felder und Texte, aber ohne Barzahlung), unabhängig von TourPost.
 
 ## Was automatisch passiert
 
@@ -8,6 +8,7 @@ Kleine Web-App für geführte Pilztouren. Gäste melden sich selbst an, der Serv
 |---|---|
 | Anmeldung | Bestätigungsmail mit Treffpunkt, Ausrüstung, Preis, **Code** (`PT-XXXXX`) und Stornolink. Der Veranstalter bekommt eine Meldung. |
 | Tour ausgebucht | Neue Anmeldungen kommen auf die **Warteliste**. Wird abgesagt, rückt der Nächste nach und bekommt sofort eine Mail. |
+| 48 Stunden nach der Anmeldung | Zahlungserinnerung, falls noch nicht bezahlt. |
 | 48 Stunden vorher | Erinnerung mit Checkliste, bei offener Zahlung mit Zahlungshinweis. |
 | Tag nach der Tour | Dankesmail (mit Link zur Rückmeldung, falls gesetzt). Wer noch nicht bezahlt hat, wird freundlich erinnert. |
 | Termin abgesagt | Mail an alle Angemeldeten mit dem Grund. |
@@ -15,11 +16,12 @@ Kleine Web-App für geführte Pilztouren. Gäste melden sich selbst an, der Serv
 
 ## Bezahlung
 
-Wie im Formular: **bar vor Ort oder PayPal, keine Vorkasse.** Jede Anmeldung hat einen Code, der Gast gibt ihn bei PayPal als Nachricht an. Der Veranstalter sieht die Zahlung in PayPal und tippt in der Verwaltung auf „bezahlt?".
+**Nur per PayPal, keine Barzahlung.** Jede Anmeldung hat einen Code (`PT-XXXXX`), der Gast gibt ihn bei PayPal als Nachricht an. Der Link in den Mails enthält den Betrag. Der Veranstalter sieht die Zahlung in PayPal und tippt in der Verwaltung auf „bezahlt?". Offene Zahlungen werden automatisch nachgehalten: 48 Stunden nach der Anmeldung kommt eine Zahlungserinnerung, 48 Stunden vor der Tour die Erinnerung mit Zahlungshinweis, am Tag danach noch einmal ein Hinweis.
 
 Wichtig zu wissen:
-- PayPal erlaubt **„Freunde und Familie" nicht für bezahlte Leistungen**. Es gibt dabei keinen Käuferschutz, und PayPal kann das Konto einschränken. Zu erkennen, ob bezahlt wurde, geht für „Freunde" nicht automatisch (keine Schnittstelle), deshalb der Handabgleich.
-- Wer das automatisieren will, nutzt **PayPal Checkout** mit Geschäftskonto (ca. 2,99 % + 0,35 € pro Zahlung). Die Anmeldung könnte dann bei Zahlung automatisch als bezahlt markiert werden. Das ist noch nicht gebaut.
+- PayPal erlaubt **„Freunde und Familie" nicht für bezahlte Leistungen**. Es gibt dabei keinen Käuferschutz, und PayPal kann das Konto einschränken. Ob bezahlt wurde, lässt sich für „Freunde" nicht automatisch erkennen (keine Schnittstelle), deshalb der Handabgleich.
+- Da jetzt jeder online zahlen muss, ist **PayPal Checkout** (Geschäftskonto, ca. 2,99 % + 0,35 € pro Zahlung) die saubere Lösung. Die Anmeldung würde dann bei Zahlung automatisch als bezahlt markiert, und der Handabgleich entfällt. Das ist noch nicht gebaut.
+- Offen: Ob unbezahlte Plätze nach einer Frist automatisch wieder freigegeben werden sollen, ist noch nicht entschieden und nicht gebaut.
 
 ## Starten
 

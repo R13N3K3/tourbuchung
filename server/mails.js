@@ -8,17 +8,17 @@ const datum = iso => new Date(iso).toLocaleString('de-DE', {
 const euro = n => `${n} €`;
 const stornoLink = b => `${baseUrl()}/storno/${b.token}`;
 
+const paypalLink = (b, t) => process.env.PAYPAL_ME ? `https://paypal.me/${process.env.PAYPAL_ME}/${b.personen * t.preis}EUR` : null;
+
 function zahlung(b, t) {
   const betrag = b.personen * t.preis;
-  const zeilen = [
-    `Preis: ${euro(t.preis)} pro Person, bei ${b.personen} ${b.personen === 1 ? 'Person' : 'Personen'} also ${euro(betrag)}.`,
-    'Hunde und Kinder unter 6 Jahren sind kostenfrei. Bezahlt wird bar vor Ort oder per PayPal, eine Vorauszahlung ist nicht nötig.',
-  ];
-  if (process.env.PAYPAL_ME) {
-    zeilen.push(`PayPal (Freunde): https://paypal.me/${process.env.PAYPAL_ME}/${betrag}EUR`,
-      `Bitte gib als Nachricht deinen Code an: ${b.code}`);
-  }
-  return zeilen.join('\n');
+  const link = paypalLink(b, t);
+  return [
+    `Preis: ${euro(t.preis)} pro Person, bei ${b.personen} ${b.personen === 1 ? 'Person' : 'Personen'} also ${euro(betrag)}. Hunde und Kinder unter 6 Jahren sind kostenfrei.`,
+    'Bezahlt wird per PayPal, Barzahlung vor Ort ist nicht möglich. Bitte zahle bis spätestens zum Tourbeginn.',
+    link ? `PayPal (Freunde): ${link}` : 'Die PayPal-Daten bekommst du vom Veranstalter.',
+    `Bitte gib als Nachricht deinen Code an: ${b.code}`,
+  ].join('\n');
 }
 
 const treffpunkt = t => `Treffpunkt: ${t.ort}`;
@@ -103,8 +103,23 @@ module.exports = {
         treffpunkt(t),
         '',
         ausruestung,
-        offen ? `\nBezahlung: ${euro(b.personen * t.preis)}, bar vor Ort oder per PayPal (Code ${b.code}).${process.env.PAYPAL_ME ? `\nhttps://paypal.me/${process.env.PAYPAL_ME}/${b.personen * t.preis}EUR` : ''}` : '',
+        offen ? `\nNoch offen: ${euro(b.personen * t.preis)} per PayPal, bitte vor der Tour. Code ${b.code}${paypalLink(b, t) ? `\n${paypalLink(b, t)}` : ''}` : '',
         `\nKannst du doch nicht kommen? Bitte sage hier ab:\n${stornoLink(b)}`,
+        fuss(),
+      ].join('\n'),
+    };
+  },
+
+  zahlungserinnerung(b, t) {
+    return {
+      subject: `Zahlung offen: Pilztour am ${datum(t.start)}`,
+      text: [
+        gruss(b),
+        `dein Platz für die Pilztour am ${datum(t.start)} ist reserviert. Wir haben noch keine Zahlung gefunden.`,
+        '',
+        zahlung(b, t),
+        '',
+        'Hast du schon bezahlt? Dann danke, die Zuordnung kann einen Moment dauern, und du kannst diese Mail ignorieren.',
         fuss(),
       ].join('\n'),
     };
@@ -116,7 +131,7 @@ module.exports = {
       text: [
         gruss(b),
         'danke, dass du dabei warst. Ich hoffe, du hast etwas mitgenommen und der Korb war gut gefüllt.',
-        !b.bezahlt ? `Falls du noch nicht bezahlt hast: ${euro(b.personen * t.preis)} per PayPal${process.env.PAYPAL_ME ? ` (https://paypal.me/${process.env.PAYPAL_ME}/${b.personen * t.preis}EUR)` : ''}, Code ${b.code}.` : '',
+        !b.bezahlt ? `Falls du noch nicht bezahlt hast: ${euro(b.personen * t.preis)} per PayPal${paypalLink(b, t) ? ` (${paypalLink(b, t)})` : ''}, Code ${b.code}.` : '',
         process.env.FEEDBACK_URL ? `\nWenn du magst, freue ich mich über eine kurze Rückmeldung oder Bewertung:\n${process.env.FEEDBACK_URL}` : '',
         fuss(),
       ].filter(x => x !== '').join('\n'),
@@ -129,7 +144,7 @@ module.exports = {
       text: [
         gruss(b),
         `leider muss die Pilztour am ${datum(t.start)} ausfallen.${grund ? `\nGrund: ${grund}` : ''}`,
-        'Bezahlt hast du nur, wenn du schon überwiesen hast. Das bekommst du selbstverständlich zurück, melde dich dazu bitte kurz bei mir.',
+        'Falls du schon per PayPal bezahlt hast, bekommst du den Betrag selbstverständlich zurück. Melde dich dazu bitte kurz bei mir.',
         `Einen neuen Termin findest du hier:\n${baseUrl()}/`,
         fuss(),
       ].join('\n'),

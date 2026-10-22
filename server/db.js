@@ -48,4 +48,9 @@ db.exec(`
   );
 `);
 
+// nachträglich hinzugefügte Spalten (bestehende Datenbanken)
+for (const col of ['zahlungserinnert INTEGER NOT NULL DEFAULT 0']) {
+  try { db.exec(`ALTER TABLE buchungen ADD COLUMN ${col}`); } catch { /* gibt es schon */ }
+}
+
 module.exports = db;
