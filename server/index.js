@@ -5,6 +5,7 @@ const path = require('path');
 const db = require('./db');
 const buchung = require('./buchung');
 const jobs = require('./jobs');
+const loeschen = require('./loeschen');
 
 const PORT = Number(process.env.PORT) || 3200;
 const MAX_PERSONEN = 10;
@@ -115,7 +116,7 @@ admin.get('/termine', (req, res) => {
   const jetzt = new Date().toISOString();
   const alle = db.prepare('SELECT * FROM termine ORDER BY start').all();
   const termine = [...alle.filter(t => t.start >= jetzt), ...alle.filter(t => t.start < jetzt).reverse()];
-  const buchungen = db.prepare("SELECT id, termin_id, code, name, email, telefon, personen, nachricht, status, bezahlt, erstellt FROM buchungen WHERE status != 'storniert' ORDER BY id").all();
+  const buchungen = db.prepare("SELECT id, termin_id, code, name, email, telefon, personen, nachricht, status, bezahlt, geloescht, erstellt FROM buchungen WHERE status != 'storniert' ORDER BY id").all();
   res.json({
     standard: { ort: process.env.ORT_STANDARD || '', preis: Number(process.env.PREIS_STANDARD) || 40 },
     termine: termine.map(t => ({ ...t, frei: buchung.freiePlaetze(t.id), buchungen: buchungen.filter(b => b.termin_id === t.id) })),
@@ -150,6 +151,17 @@ admin.post('/buchungen/:id/storno', async (req, res) => {
   res.json({ ok: true });
 });
 
+// Löschwunsch eines Gastes (Art. 17 DSGVO): nur für vergangene Touren oder stornierte Anmeldungen, sonst erst stornieren
+admin.post('/buchungen/:id/loeschen', (req, res) => {
+  const b = db.prepare('SELECT b.id, b.status, t.start FROM buchungen b JOIN termine t ON t.id = b.termin_id WHERE b.id = ?').get(Number(req.params.id));
+  if (!b) return res.status(404).json({ error: 'Anmeldung nicht gefunden.' });
+  if (b.status !== 'storniert' && b.start > new Date().toISOString()) {
+    return res.status(409).json({ error: 'Die Tour liegt noch in der Zukunft. Bitte die Anmeldung erst stornieren.' });
+  }
+  buchung.anonymisieren(b.id);
+  res.json({ ok: true });
+});
+
 admin.get('/postausgang', (req, res) => {
   res.json(db.prepare('SELECT id, zeit, an, betreff, text, status, fehler FROM postausgang ORDER BY id DESC LIMIT 50').all());
 });
@@ -164,6 +176,7 @@ if (require.main === module) {
     console.log(`Pilztour läuft auf http://localhost:${PORT} (Mails: ${process.env.SMTP_HOST ? 'SMTP' : 'nur Postausgang, kein SMTP eingerichtet'})`);
     if (!process.env.PAYPAL_ME) console.warn('Hinweis: PAYPAL_ME fehlt in der .env, die Mails enthalten dann keinen Zahlungslink.');
     jobs.start();
+    loeschen.start();
   });
 }
 

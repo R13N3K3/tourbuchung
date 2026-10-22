@@ -17,7 +17,10 @@ test.before(async () => { server = app.listen(0); await new Promise(r => server.
 test.after(() => server.close());
 
 const auth = { Authorization: 'Basic ' + Buffer.from('x:geheim').toString('base64'), 'Content-Type': 'application/json' };
-const post = (url, body, headers = { 'Content-Type': 'application/json' }) => fetch(base + url, { method: 'POST', headers, body: JSON.stringify(body) });
+// jede Anfrage mit eigener Absender-IP, damit die Mengenbegrenzung der Anmeldung die Tests nicht ausbremst
+let ipZaehler = 0;
+const ip = () => ({ 'Content-Type': 'application/json', 'X-Forwarded-For': `10.0.0.${++ipZaehler}` });
+const post = (url, body, headers = ip()) => fetch(base + url, { method: 'POST', headers, body: JSON.stringify(body) });
 const mails = () => db.prepare('SELECT * FROM postausgang ORDER BY id').all();
 const gast = (terminId, extra = {}) => ({ terminId, name: 'Max Muster', email: 'max@example.org', telefon: '0176 1234567', personen: 2, datenschutz: true, ...extra });
 const inTagen = d => { const t = new Date(Date.now() + d * 864e5); t.setMinutes(0, 0, 0); return t; };
@@ -99,4 +102,48 @@ test('Bezahlt markieren und Termin absagen benachrichtigt alle', async () => {
   assert.equal(r.benachrichtigt, 1);
   assert.ok(mails().some(x => /Absage/.test(x.betreff) && /Sturmwarnung/.test(x.text)));
   assert.equal((await post('/api/buchung', gast(terminId))).status, 409);
+});
+
+test('Automatische Löschung entfernt Personendaten, behält Zahlungsvermerk', async () => {
+  const loeschen = require('../server/loeschen');
+  const neu = await (await post('/api/admin/termine', { start: lokal(inTagen(5)), ort: 'Ort', kapazitaet: 5, preis: 40 }, auth)).json();
+  const r = await (await post('/api/buchung', gast(neu.id, { name: 'Löschkandidat', email: 'loesch@example.org', nachricht: 'geheim' }))).json();
+  const row = () => db.prepare('SELECT * FROM buchungen WHERE code = ?').get(r.code);
+  const token = row().token;
+  await post(`/api/admin/buchungen/${row().id}/bezahlt`, { bezahlt: true }, auth);
+
+  // vor Ablauf der Frist passiert nichts
+  loeschen.run(new Date(Date.now() + 6 * 30 * 864e5));
+  assert.equal(row().name, 'Löschkandidat');
+
+  // nach 13 Monaten ist alles Persönliche weg
+  const res = loeschen.run(new Date(Date.now() + 13 * 30 * 864e5));
+  assert.ok(res.anmeldungen >= 1);
+  const b = row();
+  assert.equal(b.name, '[gelöscht]');
+  assert.equal(b.email, '');
+  assert.equal(b.telefon, '');
+  assert.equal(b.nachricht, null);
+  assert.equal(b.bezahlt, 1);
+  assert.equal(b.personen, 2);
+  assert.equal(db.prepare("SELECT COUNT(*) n FROM postausgang WHERE text LIKE '%Löschkandidat%'").get().n, 0);
+  assert.equal((await fetch(base + '/api/storno/' + token)).status, 404);   // Stornolink ist tot
+  assert.equal(await jobs.run(new Date(Date.now() + 13 * 30 * 864e5)), 0);   // keine Mails an Gelöschte
+});
+
+test('Stornierte Anmeldungen werden nach 30 Tagen gelöscht, Löschwunsch geht sofort bei vergangenen Touren', async () => {
+  const loeschen = require('../server/loeschen');
+  const t = await (await post('/api/admin/termine', { start: lokal(inTagen(40)), ort: 'Ort', kapazitaet: 5, preis: 40 }, auth)).json();
+  const a = await (await post('/api/buchung', gast(t.id, { name: 'Storno Person', email: 'storno@example.org' }))).json();
+  const id = db.prepare('SELECT id, token FROM buchungen WHERE code = ?').get(a.code);
+  await post('/api/storno/' + id.token, {});
+  loeschen.run(new Date(Date.now() + 10 * 864e5));
+  assert.equal(db.prepare('SELECT name FROM buchungen WHERE id = ?').get(id.id).name, 'Storno Person');
+  loeschen.run(new Date(Date.now() + 31 * 864e5));
+  assert.equal(db.prepare('SELECT name FROM buchungen WHERE id = ?').get(id.id).name, '[gelöscht]');
+
+  // Löschwunsch bei zukünftiger Tour nur nach Storno
+  const c = await (await post('/api/buchung', gast(t.id, { name: 'Wunsch', email: 'wunsch@example.org' }))).json();
+  const cid = db.prepare('SELECT id FROM buchungen WHERE code = ?').get(c.code).id;
+  assert.equal((await post(`/api/admin/buchungen/${cid}/loeschen`, {}, auth)).status, 409);
 });

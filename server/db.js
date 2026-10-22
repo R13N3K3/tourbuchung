@@ -49,7 +49,11 @@ db.exec(`
 `);
 
 // nachträglich hinzugefügte Spalten (bestehende Datenbanken)
-for (const col of ['zahlungserinnert INTEGER NOT NULL DEFAULT 0']) {
+for (const col of [
+  'zahlungserinnert INTEGER NOT NULL DEFAULT 0',
+  'geloescht INTEGER NOT NULL DEFAULT 0',   // personenbezogene Daten sind entfernt
+  'storniert_am TEXT',
+]) {
   try { db.exec(`ALTER TABLE buchungen ADD COLUMN ${col}`); } catch { /* gibt es schon */ }
 }
 

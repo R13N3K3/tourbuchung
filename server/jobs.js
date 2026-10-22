@@ -13,7 +13,7 @@ const FOLLOWUP_UNTIL = 5 * 24 * HOUR;
 async function run(now = new Date()) {
   const n = now.getTime();
   const rows = db.prepare(`SELECT b.*, t.start, t.ort, t.preis FROM buchungen b JOIN termine t ON t.id = b.termin_id
-    WHERE b.status = 'bestaetigt' AND t.abgesagt = 0`).all();
+    WHERE b.status = 'bestaetigt' AND b.geloescht = 0 AND t.abgesagt = 0`).all();
   let sent = 0;
   for (const r of rows) {
     const start = new Date(r.start).getTime();

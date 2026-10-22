@@ -11,6 +11,7 @@ Kleine Web-App für geführte Pilztouren. Gäste melden sich selbst an, der Serv
 | 48 Stunden nach der Anmeldung | Zahlungserinnerung, falls noch nicht bezahlt. |
 | 48 Stunden vorher | Erinnerung mit Checkliste, bei offener Zahlung mit Zahlungshinweis. |
 | Tag nach der Tour | Dankesmail (mit Link zur Rückmeldung, falls gesetzt). Wer noch nicht bezahlt hat, wird freundlich erinnert. |
+| 12 Monate nach der Tour (einstellbar, `LOESCHFRIST_MONATE`) | **Automatische Löschung**: Name, E-Mail, Telefon und Nachricht werden entfernt, ebenso die gespeicherten Mails. Stornierte Anmeldungen schon nach 30 Tagen. Code, Personenzahl, Termin und Zahlungsvermerk bleiben ohne Namen für die Buchhaltung. |
 | Termin abgesagt | Mail an alle Angemeldeten mit dem Grund. |
 | Gast storniert (Link in der Mail) | Bestätigung, Meldung an den Veranstalter, Warteliste rückt nach. |
 
@@ -35,6 +36,7 @@ npm test                  # Ablauf-Tests gegen eine Wegwerf-Datenbank
 - **Gäste:** `/` (Anmeldung), `/storno/<Token>` (aus der Mail).
 - **Verwaltung:** `/admin/`, Benutzername beliebig, Passwort aus `ADMIN_PASSWORD`. Dort: Termine anlegen und absagen, Anmeldungen sehen, Zahlungen abhaken, Gäste stornieren, Postausgang ansehen.
 - **Mails:** Ohne `SMTP_HOST` werden Mails nur im Postausgang der Verwaltung gespeichert (Testmodus). Für den echten Betrieb SMTP eintragen (z. B. ein Mail-Konto des Veranstalters mit App-Passwort oder ein Dienst wie Brevo/Mailjet).
+- **Löschwunsch** eines Gastes: In der Verwaltung bei vergangenen Touren auf „Daten löschen" tippen (bei künftigen Touren erst stornieren).
 - Daten liegen in `data/pilztour.db` (SQLite, nicht im Repo, regelmäßig sichern).
 - Termine sind Ortszeit (`TZ=Europe/Berlin`).
 

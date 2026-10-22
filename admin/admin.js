@@ -15,7 +15,10 @@ function meldung(text) {
   $('meldung').hidden = !text;
 }
 
-function zeile(b) {
+function zeile(b, vorbei) {
+  if (b.geloescht) {
+    return `<tr><td class="dim small">${b.personen} P. · Code ${esc(b.code)} · Daten gelöscht (Datenschutz)${b.bezahlt ? ' · bezahlt ✓' : ''}</td><td></td></tr>`;
+  }
   const [label, cls] = STATUS[b.status];
   return `<tr>
     <td><strong>${esc(b.name)}</strong> <span class="badge ${cls}">${label}</span><br>
@@ -23,6 +26,7 @@ function zeile(b) {
     <td class="row">
       ${b.status === 'bestaetigt' ? `<button class="small ${b.bezahlt ? '' : 'ghost'}" data-act="bezahlt" data-id="${b.id}" data-val="${b.bezahlt ? 0 : 1}">${b.bezahlt ? 'bezahlt ✓' : 'bezahlt?'}</button>` : ''}
       <button class="small danger" data-act="storno" data-id="${b.id}">Storno</button>
+      ${vorbei ? `<button class="small ghost" data-act="loeschen" data-id="${b.id}">Daten löschen</button>` : ''}
     </td></tr>`;
 }
 
@@ -35,7 +39,7 @@ function terminKarte(t) {
     <div class="row"><strong>${esc(fmt(t.start))}</strong>
       ${t.abgesagt ? '<span class="badge err">abgesagt</span>' : vorbei ? '<span class="badge">vorbei</span>' : ''}</div>
     <div class="dim small">${esc(t.ort)} · ${belegt}/${t.kapazitaet} belegt · ${t.preis} € p. P. · eingenommen ${summe} €, offen ${offen} €</div>
-    ${t.buchungen.length ? `<table>${t.buchungen.map(zeile).join('')}</table>` : '<p class="dim small">Noch keine Anmeldungen.</p>'}
+    ${t.buchungen.length ? `<table>${t.buchungen.map(b => zeile(b, vorbei)).join('')}</table>` : '<p class="dim small">Noch keine Anmeldungen.</p>'}
     ${t.abgesagt ? '' : `<p><button class="small danger" data-act="absage" data-id="${t.id}">Termin absagen (alle werden benachrichtigt)</button></p>`}
   </section>`;
 }
@@ -68,6 +72,11 @@ $('termine').addEventListener('click', async e => {
     if (act === 'storno') {
       if (!confirm('Diese Anmeldung stornieren? Der Gast bekommt eine Mail, die Warteliste rückt nach.')) return;
       await api('POST', `/api/admin/buchungen/${id}/storno`);
+    }
+    if (act === 'loeschen') {
+      if (!confirm('Name, E-Mail, Telefon und Nachricht dieser Anmeldung endgültig löschen? Code, Personenzahl und Zahlungsvermerk bleiben ohne Namen erhalten.')) return;
+      await api('POST', `/api/admin/buchungen/${id}/loeschen`);
+      meldung('Daten gelöscht ✓');
     }
     if (act === 'absage') {
       const grund = prompt('Grund der Absage (kommt in die Mail an alle Angemeldeten, darf leer bleiben):');

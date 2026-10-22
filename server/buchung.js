@@ -76,7 +76,7 @@ async function stornieren(buchungId, { vonKunde }) {
   const b = db.prepare('SELECT * FROM buchungen WHERE id = ?').get(buchungId);
   if (!b || b.status === 'storniert') return false;
   const t = termin(b.termin_id);
-  db.prepare("UPDATE buchungen SET status = 'storniert' WHERE id = ?").run(b.id);
+  db.prepare("UPDATE buchungen SET status = 'storniert', storniert_am = ? WHERE id = ?").run(new Date().toISOString(), b.id);
   const m = mails.storniert(b, t);
   await send(b.email, m.subject, m.text);
   if (vonKunde) await informiere(mails.stornoVeranstalter(b, t));
@@ -96,4 +96,15 @@ async function terminAbsagen(terminId, grund) {
   return betroffene.length;
 }
 
-module.exports = { Fehler, termin, freiePlaetze, anmelden, nachruecken, stornieren, terminAbsagen };
+// Entfernt alle personenbezogenen Daten einer Anmeldung. Code, Personenzahl, Termin und Zahlungsvermerk bleiben
+// (ohne Namen) für die Buchhaltung erhalten. Der Stornolink funktioniert danach nicht mehr.
+function anonymisieren(id) {
+  const b = db.prepare('SELECT id, email FROM buchungen WHERE id = ?').get(id);
+  if (!b) return false;
+  db.prepare("UPDATE buchungen SET name = '[gelöscht]', email = '', telefon = '', nachricht = NULL, token = ?, geloescht = 1 WHERE id = ?")
+    .run('geloescht-' + crypto.randomBytes(8).toString('hex'), id);
+  if (b.email) db.prepare('DELETE FROM postausgang WHERE an = ?').run(b.email);
+  return true;
+}
+
+module.exports = { Fehler, anonymisieren, termin, freiePlaetze, anmelden, nachruecken, stornieren, terminAbsagen };
