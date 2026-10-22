@@ -93,7 +93,7 @@ npm test                  # Ablauf-Tests gegen eine Wegwerf-Datenbank
 - Daten liegen in `data/tourbuchung.db` (SQLite, nicht im Repo, regelmäßig sichern).
 - Termine sind Ortszeit (`TZ=Europe/Berlin`).
 
-## Betrieb im Internet
+## Betrieb auf einem gemieteten Server
 
 Läuft auf einem kleinen Server (z. B. 3 bis 5 € im Monat) hinter einem Reverse-Proxy mit **HTTPS**, zum Beispiel Caddy:
 
@@ -104,6 +104,101 @@ pilz.deinedomain.de {
 ```
 
 Als systemd-Dienst starten (`ExecStart=/usr/bin/node server/index.js`, `WorkingDirectory` auf den Projektordner, `Restart=on-failure`). Ohne HTTPS darf die Verwaltung nicht benutzt werden, das Passwort wird sonst im Klartext übertragen. `BASE_URL` muss die öffentliche Adresse sein, sonst stimmen die Links in den Mails nicht.
+
+## Betrieb auf dem Heimserver (günstig)
+
+Der Server läuft auf einem Rechner zu Hause (Raspberry Pi, Mini-PC, alter Laptop) und wird über einen **Cloudflare-Tunnel** erreichbar gemacht. Kosten: nur Strom und eine **Domain** (grob 5 bis 15 € im Jahr, nicht geprüft). Eine Portfreigabe im Router ist nicht nötig, der Tunnel baut die Verbindung nach außen auf.
+
+**Vorher wissen:**
+- Die Seite ist nur erreichbar, solange Rechner und Internet laufen. Standby und Ruhezustand ausschalten. Für ein Angebot, bei dem Geld fließt, ist ein gemieteter Server zuverlässiger. Der Umzug ist einfach: Projektordner und `data/tourbuchung.db` mitnehmen.
+- Der Schnelltunnel (`trycloudflare.com`, wie bei TourPost) taugt hier **nicht**: Die Adresse ändert sich bei jedem Start, aber Gäste, Stornolinks in Mails und PayPal brauchen eine feste Adresse.
+- Namen, Mailadressen und Telefonnummern der Gäste liegen auf einem privaten Rechner. Das gehört in die Datenschutzerklärung, und der Rechner braucht Updates und ein sicheres Passwort.
+- Der Tunnel darf **nur** auf die Tourbuchung (Port 3200) zeigen, nie auf andere Dienste desselben Rechners.
+
+**1. Domain und Cloudflare-Konto**
+1. Kostenloses Konto auf [cloudflare.com](https://www.cloudflare.com) anlegen.
+2. Eine Domain besorgen (bei Cloudflare direkt oder bei einem anderen Anbieter) und in Cloudflare unter „Domain hinzufügen" eintragen. Bei einem anderen Anbieter dort die **Nameserver** auf die von Cloudflare umstellen. Das dauert bis zu einige Stunden.
+
+**2. Tourbuchung einrichten**
+```bash
+git clone https://github.com/R13N3K3/tourbuchung.git
+cd tourbuchung
+npm install
+cp .env.example .env
+```
+In der `.env` mindestens ausfüllen: `ADMIN_PASSWORD` (lang und zufällig), `BASE_URL=https://buchung.deinedomain.de`, `KONTAKT_EMAIL`, `PAYPAL_ME` und die `SMTP_*`-Daten. `HOST` bleibt auf `127.0.0.1`, der Server ist dann nur über den Tunnel erreichbar.
+
+**3. Tunnel anlegen** (Beispiel mit der Adresse `buchung.deinedomain.de`)
+```bash
+sudo pacman -S cloudflared          # Arch/CachyOS, sonst siehe Cloudflare-Downloadseite
+cloudflared tunnel login            # Browser öffnet sich, Domain auswählen
+cloudflared tunnel create tourbuchung
+cloudflared tunnel route dns tourbuchung buchung.deinedomain.de
+```
+`create` gibt eine **Tunnel-ID** aus (und legt `~/.cloudflared/<ID>.json` an, das ist ein Geheimnis, nie weitergeben). Dann die Datei `~/.cloudflared/config.yml` anlegen:
+```yaml
+tunnel: <Tunnel-ID>
+credentials-file: /home/<benutzer>/.cloudflared/<Tunnel-ID>.json
+ingress:
+  - hostname: buchung.deinedomain.de
+    service: http://127.0.0.1:3200
+  - service: http_status:404
+```
+
+**4. Beides als Dienste starten, damit es immer läuft**
+
+Server: `~/.config/systemd/user/tourbuchung.service`
+```ini
+[Unit]
+Description=Tourbuchung
+After=network-online.target
+
+[Service]
+WorkingDirectory=/home/<benutzer>/tourbuchung
+ExecStart=/usr/bin/node server/index.js
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+```
+Tunnel: `~/.config/systemd/user/cloudflared-tourbuchung.service`
+```ini
+[Unit]
+Description=Cloudflare Tunnel für Tourbuchung
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/cloudflared tunnel --no-autoupdate run tourbuchung
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+```
+Dann aktivieren und dafür sorgen, dass sie auch ohne Anmeldung nach einem Neustart laufen:
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now tourbuchung cloudflared-tourbuchung
+sudo loginctl enable-linger $USER
+```
+(Den Pfad zu `node` und `cloudflared` mit `command -v node` bzw. `command -v cloudflared` prüfen und einsetzen.) Logs: `journalctl --user -u tourbuchung -f`.
+
+**5. Prüfen**
+- `https://buchung.deinedomain.de` zeigt die Anmeldeseite, `/admin/` fragt nach dem Passwort.
+- Eine Testanmeldung machen und prüfen, dass die Mail ankommt, die Links darin die richtige Adresse haben und der Stornolink funktioniert.
+- Rechner neu starten und prüfen, dass alles von allein wieder läuft.
+
+**6. Sicherung der Daten** (die Datenbank enthält die Gästedaten, Sicherungen sind genauso vertraulich)
+```bash
+sudo pacman -S sqlite
+mkdir -p ~/tourbuchung-backup
+# täglich um 3 Uhr (crontab -e):
+0 3 * * * sqlite3 ~/tourbuchung/data/tourbuchung.db ".backup '$HOME/tourbuchung-backup/db-$(date +\%F).db'" && find ~/tourbuchung-backup -name 'db-*.db' -mtime +30 -delete
+```
+Sicherungen nach 30 Tagen zu löschen passt zur Löschfrist der Datenschutzerklärung. Eine Kopie auf einem zweiten Datenträger lohnt sich.
+
+**Tipp zur Verwaltung:** `/admin/` ist über das Internet erreichbar und nur durch das Passwort geschützt. Wer mehr Schutz will, kann in Cloudflare (Zero Trust, „Access") den Pfad `/admin*` zusätzlich per Anmeldung absichern. Das ist im kostenlosen Tarif für wenige Nutzer möglich, die Details ändern sich bei Cloudflare öfter.
 
 ## Vor dem Start erledigen
 

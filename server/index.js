@@ -172,7 +172,7 @@ app.use((err, req, res, next) => {
 });
 
 if (require.main === module) {
-  app.listen(PORT, () => {
+  app.listen(PORT, process.env.HOST || '127.0.0.1', () => {
     console.log(`Tourbuchung läuft auf http://localhost:${PORT} (Mails: ${process.env.SMTP_HOST ? 'SMTP' : 'nur Postausgang, kein SMTP eingerichtet'})`);
     if (!process.env.PAYPAL_ME) console.warn('Hinweis: PAYPAL_ME fehlt in der .env, die Mails enthalten dann keinen Zahlungslink.');
     jobs.start();
