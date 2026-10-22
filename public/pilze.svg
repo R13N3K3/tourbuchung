@@ -6,7 +6,14 @@
     <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ecd7b4"/><stop offset="1" stop-color="#cdb184"/></linearGradient>
     <linearGradient id="creme" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#eadfc8"/><stop offset=".45" stop-color="#fbf5e8"/><stop offset="1" stop-color="#e3d6bb"/></linearGradient>
     <linearGradient id="weiss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf8"/><stop offset="1" stop-color="#e9e0d0"/></linearGradient>
-    <radialGradient id="boden" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#e8dcc6"/><stop offset="1" stop-color="#f5efe3"/></radialGradient>
+    <linearGradient id="vorne" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e3d3b1"/><stop offset="1" stop-color="#d2bc92"/></linearGradient>
+    <linearGradient id="mitte" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ece1c9"/><stop offset="1" stop-color="#e2d3b3"/></linearGradient>
+    <!-- weicher Rand: der Boden läuft an den Seiten und unten sanft aus -->
+    <radialGradient id="ausblenden" cx="320" cy="186" r="345" gradientUnits="userSpaceOnUse" gradientTransform="translate(320 186) scale(1 .085) translate(-320 -186)">
+      <stop offset="0" stop-color="#fff"/><stop offset=".62" stop-color="#fff"/><stop offset="1" stop-color="#000"/>
+    </radialGradient>
+    <mask id="bodenmaske" maskUnits="userSpaceOnUse" x="-20" y="100" width="680" height="130"><rect x="-20" y="100" width="680" height="130" fill="url(#ausblenden)"/></mask>
+    <radialGradient id="schatten"><stop offset="0" stop-color="#6b5434" stop-opacity=".28"/><stop offset="1" stop-color="#6b5434" stop-opacity="0"/></radialGradient>
 
     <!-- Fliegenpilz: Fußpunkt bei (0,0), wächst nach oben -->
     <g id="fliege">
@@ -51,19 +58,44 @@
     </g>
   </defs>
 
-  <!-- Boden -->
-  <ellipse cx="320" cy="198" rx="326" ry="18" fill="url(#boden)"/>
-  <ellipse cx="150" cy="156" rx="170" ry="10" fill="#f1e8d6" opacity=".9"/>
-  <ellipse cx="470" cy="152" rx="190" ry="9" fill="#f1e8d6" opacity=".9"/>
-  <!-- Moos -->
-  <g fill="#a9bd84" opacity=".7"><ellipse cx="205" cy="194" rx="26" ry="5"/><ellipse cx="445" cy="193" rx="30" ry="5"/><ellipse cx="45" cy="190" rx="20" ry="4"/><ellipse cx="610" cy="188" rx="18" ry="4"/></g>
+  <!-- Boden: ein durchgehendes Gelände aus drei Schichten, an den Rändern weich ausgeblendet -->
+  <g mask="url(#bodenmaske)">
+    <path d="M-20 158 Q70 146 160 154 T320 151 T490 156 T660 148 L660 230 L-20 230Z" fill="#f2e9d8"/>
+    <path d="M-20 175 Q90 165 190 173 T370 171 T550 175 T660 168 L660 230 L-20 230Z" fill="url(#mitte)"/>
+    <path d="M-20 194 Q110 186 230 193 T440 192 T660 190 L660 230 L-20 230Z" fill="url(#vorne)"/>
+    <!-- Moospolster auf dem Boden -->
+    <g fill="#b3c58f" opacity=".75">
+      <path d="M180 196 Q200 187 222 195 Q206 201 180 196Z"/>
+      <path d="M420 195 Q446 185 474 194 Q450 201 420 195Z"/>
+      <path d="M20 195 Q36 188 56 194 Q40 200 20 195Z"/>
+      <path d="M580 193 Q598 186 618 192 Q600 198 580 193Z"/>
+      <path d="M300 176 Q316 170 334 175 Q318 180 300 176Z" opacity=".7"/>
+    </g>
+    <!-- Laub- und Nadelstreu -->
+    <g stroke="#b79f74" stroke-width="1.4" stroke-linecap="round" opacity=".7">
+      <path d="M30 203 l9 -2 M86 200 l8 2 M148 205 l9 -3 M206 202 l8 1 M300 204 l9 -2 M372 201 l8 2 M440 205 l9 -2 M512 202 l8 2 M566 205 l9 -3 M620 201 l8 1 M250 198 l7 -2 M338 198 l8 2 M470 199 l7 -2 M120 183 l7 -1 M280 181 l8 1 M410 182 l7 -1 M520 184 l8 -1"/>
+    </g>
+    <g fill="#cfa779" opacity=".7"><circle cx="64" cy="204" r="2"/><circle cx="170" cy="203" r="1.8"/><circle cx="330" cy="205" r="2.2"/><circle cx="420" cy="203" r="1.8"/><circle cx="545" cy="204" r="2"/><circle cx="600" cy="203" r="1.6"/></g>
+  </g>
+
+  <!-- weiche Schatten unter den vorderen Pilzen -->
+  <g>
+    <ellipse cx="112" cy="199" rx="42" ry="6" fill="url(#schatten)"/>
+    <ellipse cx="190" cy="201" rx="18" ry="3.5" fill="url(#schatten)"/>
+    <ellipse cx="262" cy="203" rx="40" ry="6" fill="url(#schatten)"/>
+    <ellipse cx="392" cy="201" rx="26" ry="4.5" fill="url(#schatten)"/>
+    <ellipse cx="486" cy="205" rx="28" ry="4.5" fill="url(#schatten)"/>
+    <ellipse cx="528" cy="207" rx="20" ry="3.5" fill="url(#schatten)"/>
+    <ellipse cx="596" cy="203" rx="22" ry="3.5" fill="url(#schatten)"/>
+    <ellipse cx="36" cy="205" rx="14" ry="3" fill="url(#schatten)"/>
+  </g>
 
   <!-- hintere Reihe: kleiner, blasser -->
   <g opacity=".7">
-    <use href="#stein" transform="translate(52 158) scale(.5)"/>
-    <use href="#pfiff" transform="translate(172 160) scale(.5)"/>
-    <use href="#fliege" transform="translate(338 158) scale(.5)"/>
-    <use href="#stein" transform="translate(596 156) scale(.46)"/>
+    <use href="#stein" transform="translate(52 174) scale(.5)"/>
+    <use href="#pfiff" transform="translate(172 175) scale(.5)"/>
+    <use href="#fliege" transform="translate(338 173) scale(.5)"/>
+    <use href="#stein" transform="translate(596 172) scale(.46)"/>
   </g>
 
   <!-- vordere Reihe: unterschiedlich hoch -->
