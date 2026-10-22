@@ -11,7 +11,7 @@ Kleine Web-App für geführte Pilztouren. Gäste melden sich selbst an, der Serv
 4. Sie bezahlen per **PayPal „Freunde"** und schreiben den Code dazu.
 5. Kurz vor der Tour kommt eine **Erinnerung**. Danach gibt es ein Dankeschön.
 
-**Für Eduard (der Veranstalter)**
+**Für den Veranstalter**
 1. Er legt in der **Verwaltung** (`/admin/`) einen neuen Termin an: Datum, Treffpunkt, Plätze, Preis.
 2. Ab da läuft fast alles von allein: Anmeldungen, Bestätigungen, Warteliste, Erinnerungen.
 3. Er schaut ab und zu in PayPal, ob Geld da ist, und tippt in der Verwaltung beim Gast auf **„bezahlt?"**.
@@ -20,13 +20,13 @@ Kleine Web-App für geführte Pilztouren. Gäste melden sich selbst an, der Serv
 **So sieht der Ablauf aus**
 
 ```
-Eduard legt Termin an
+Veranstalter legt Termin an
         │
         ▼
 Gast meldet sich an ──► Mail mit Code ──► Gast zahlt per PayPal
         │                                        │
         │ (Tour voll?)                           ▼
-        ▼                              Eduard tippt „bezahlt ✓"
+        ▼                              Veranstalter tippt „bezahlt ✓"
    Warteliste ──► rückt nach, sobald                │
    ein Platz frei wird                              ▼
                         2 Tage vorher: Erinnerung ──► Tour ──► Danke-Mail
@@ -35,7 +35,7 @@ Gast meldet sich an ──► Mail mit Code ──► Gast zahlt per PayPal
                                     nach 12 Monaten: persönliche Daten werden gelöscht
 ```
 
-**Was Eduard nie von Hand tun muss:** Bestätigungen schreiben, Erinnerungen schicken, die Warteliste pflegen, Zahlungs-Nachfragen stellen, alte Daten löschen.
+**Was der Veranstalter nie von Hand tun muss:** Bestätigungen schreiben, Erinnerungen schicken, die Warteliste pflegen, Zahlungs-Nachfragen stellen, alte Daten löschen.
 
 **Was er noch selbst tun muss:** Termine anlegen, Zahlungen abhaken, bei Absagen auf den Knopf drücken, und PayPal im Blick behalten.
 
