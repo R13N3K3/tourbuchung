@@ -173,7 +173,7 @@ app.use((err, req, res, next) => {
 
 if (require.main === module) {
   app.listen(PORT, () => {
-    console.log(`Pilztour läuft auf http://localhost:${PORT} (Mails: ${process.env.SMTP_HOST ? 'SMTP' : 'nur Postausgang, kein SMTP eingerichtet'})`);
+    console.log(`Tourbuchung läuft auf http://localhost:${PORT} (Mails: ${process.env.SMTP_HOST ? 'SMTP' : 'nur Postausgang, kein SMTP eingerichtet'})`);
     if (!process.env.PAYPAL_ME) console.warn('Hinweis: PAYPAL_ME fehlt in der .env, die Mails enthalten dann keinen Zahlungslink.');
     jobs.start();
     loeschen.start();

@@ -5,7 +5,7 @@ const path = require('path');
 
 const dir = process.env.DATA_DIR || path.join(__dirname, '..', 'data');
 fs.mkdirSync(dir, { recursive: true });
-const db = new DatabaseSync(process.env.DB_FILE || path.join(dir, 'pilztour.db'));
+const db = new DatabaseSync(process.env.DB_FILE || path.join(dir, 'tourbuchung.db'));
 
 db.exec(`
   PRAGMA journal_mode = WAL;

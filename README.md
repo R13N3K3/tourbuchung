@@ -1,4 +1,4 @@
-# Pilztour – Anmeldung und Verwaltung
+# Tourbuchung – Anmeldung und Verwaltung für Pilztouren
 
 Kleine Web-App für geführte Pilztouren. Gäste melden sich selbst an, der Server bestätigt, erinnert und kümmert sich um Warteliste und Absagen. Der Veranstalter muss nur noch Termine anlegen und Zahlungen abhaken. Entstanden nach dem Vorbild des bisherigen Google-Formulars (dieselben Felder und Texte, aber ohne Barzahlung), unabhängig von TourPost.
 
@@ -37,7 +37,7 @@ npm test                  # Ablauf-Tests gegen eine Wegwerf-Datenbank
 - **Verwaltung:** `/admin/`, Benutzername beliebig, Passwort aus `ADMIN_PASSWORD`. Dort: Termine anlegen und absagen, Anmeldungen sehen, Zahlungen abhaken, Gäste stornieren, Postausgang ansehen.
 - **Mails:** Ohne `SMTP_HOST` werden Mails nur im Postausgang der Verwaltung gespeichert (Testmodus). Für den echten Betrieb SMTP eintragen (z. B. ein Mail-Konto des Veranstalters mit App-Passwort oder ein Dienst wie Brevo/Mailjet).
 - **Löschwunsch** eines Gastes: In der Verwaltung bei vergangenen Touren auf „Daten löschen" tippen (bei künftigen Touren erst stornieren).
-- Daten liegen in `data/pilztour.db` (SQLite, nicht im Repo, regelmäßig sichern).
+- Daten liegen in `data/tourbuchung.db` (SQLite, nicht im Repo, regelmäßig sichern).
 - Termine sind Ortszeit (`TZ=Europe/Berlin`).
 
 ## Betrieb im Internet
