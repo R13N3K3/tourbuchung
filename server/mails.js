@@ -103,7 +103,7 @@ module.exports = {
         treffpunkt(t),
         '',
         ausruestung,
-        offen ? `\nNoch offen: ${euro(b.personen * t.preis)} per PayPal, bitte vor der Tour. Code ${b.code}${paypalLink(b, t) ? `\n${paypalLink(b, t)}` : ''}` : '',
+        offen ? `\nNoch offen: ${euro(b.personen * t.preis)} per PayPal „Freunde“, bitte vor der Tour. Code ${b.code}${paypalLink(b, t) ? `\n${paypalLink(b, t)}` : ''}` : '',
         `\nKannst du doch nicht kommen? Bitte sage hier ab:\n${stornoLink(b)}`,
         fuss(),
       ].join('\n'),
@@ -131,7 +131,7 @@ module.exports = {
       text: [
         gruss(b),
         'danke, dass du dabei warst. Ich hoffe, du hast etwas mitgenommen und der Korb war gut gefüllt.',
-        !b.bezahlt ? `Falls du noch nicht bezahlt hast: ${euro(b.personen * t.preis)} per PayPal${paypalLink(b, t) ? ` (${paypalLink(b, t)})` : ''}, Code ${b.code}.` : '',
+        !b.bezahlt ? `Falls du noch nicht bezahlt hast: ${euro(b.personen * t.preis)} per PayPal „Freunde“${paypalLink(b, t) ? ` (${paypalLink(b, t)})` : ''}, Code ${b.code}.` : '',
         process.env.FEEDBACK_URL ? `\nWenn du magst, freue ich mich über eine kurze Rückmeldung oder Bewertung:\n${process.env.FEEDBACK_URL}` : '',
         fuss(),
       ].filter(x => x !== '').join('\n'),
