@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Verwaltung</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+  <h1>Verwaltung</h1>
+  <div id="meldung" class="msg ok" hidden></div>
+
+  <details class="card" id="neu">
+    <summary><strong>Neuen Termin anlegen</strong></summary>
+    <form id="terminForm">
+      <label for="start">Beginn</label>
+      <input type="datetime-local" id="start" required>
+      <label for="ort">Treffpunkt</label>
+      <input type="text" id="ort" required maxlength="200">
+      <div class="grid2">
+        <div><label for="kap">Plätze</label><input type="number" id="kap" min="1" max="200" value="10" required></div>
+        <div><label for="preis">Preis pro Person (€)</label><input type="number" id="preis" min="0" max="1000" required></div>
+      </div>
+      <p><button type="submit">Termin anlegen</button></p>
+    </form>
+  </details>
+
+  <div id="termine"></div>
+
+  <details class="card">
+    <summary><strong>Postausgang</strong> <span class="dim small">(zuletzt verschickte Mails)</span></summary>
+    <div id="post"></div>
+  </details>
+</main>
+<script src="/admin/admin.js"></script>
+</body>
+</html>

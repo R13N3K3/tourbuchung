@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Abmelden</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+  <h1>Anmeldung stornieren</h1>
+  <section class="card" id="box"><p class="dim">Wird geladen …</p></section>
+</main>
+<script>
+const token = location.pathname.split('/').pop();
+const box = document.getElementById('box');
+const esc = s => { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; };
+const fmt = iso => new Date(iso).toLocaleString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }) + ' Uhr';
+
+async function laden() {
+  const res = await fetch('/api/storno/' + encodeURIComponent(token));
+  if (!res.ok) { box.innerHTML = '<p>Dieser Link ist ungültig.</p>'; return; }
+  const b = await res.json();
+  if (b.status === 'storniert') { box.innerHTML = `<p>Die Anmeldung für ${esc(fmt(b.start))} ist bereits storniert.</p>`; return; }
+  if (b.abgesagt) { box.innerHTML = `<p>Die Tour am ${esc(fmt(b.start))} wurde abgesagt, du musst nichts weiter tun.</p>`; return; }
+  box.innerHTML = `<p>Hallo ${esc(b.name)}, möchtest du die Anmeldung für <strong>${esc(fmt(b.start))}</strong> (${b.personen} ${b.personen === 1 ? 'Person' : 'Personen'}) wirklich stornieren?</p>
+    <p><button class="danger" id="ja">Ja, stornieren</button></p>`;
+  document.getElementById('ja').onclick = async e => {
+    e.target.disabled = true;
+    const r = await fetch('/api/storno/' + encodeURIComponent(token), { method: 'POST' });
+    box.innerHTML = r.ok ? '<p>Deine Anmeldung ist storniert. Du bekommst eine Bestätigung per E-Mail.</p>' : '<p>Das hat nicht geklappt, bitte später noch einmal versuchen.</p>';
+  };
+}
+laden();
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pilztour anmelden</title>
+  <meta name="description" content="Geführte Pilzexkursion in den Harburger Bergen: Termin wählen und anmelden.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+  <h1>Pilztour mit <span id="veranstalter">Eduard</span> 🍄</h1>
+  <p class="dim">Geführte Pilzexkursion in den Harburger Bergen. Anmeldung in einer Minute, die Bestätigung kommt per E-Mail.</p>
+
+  <section class="card">
+    <h2>Das erwartet dich</h2>
+    <ul class="facts">
+      <li>Etwa 3 bis 4 Stunden unterwegs (ca. 5.000 bis 7.000 Schritte).</li>
+      <li>Verschiedene Pilzarten, Bestimmungsmerkmale und Übungen zur sicheren Bestimmung.</li>
+      <li>Dazu Heilpilze, Pilzzucht und die Rolle der Pilze im Ökosystem.</li>
+      <li>Mitbringen: <strong>Korb oder Obstnetz und Messer</strong> (Pflicht), festes Schuhwerk, warme Kleidung, bei Regen Regensachen.</li>
+      <li>Preis: <strong>40 € pro Person</strong>, bar oder per PayPal, keine Vorkasse. Hunde und Kinder unter 6 Jahren sind kostenfrei.</li>
+    </ul>
+  </section>
+
+  <form id="form" class="card" novalidate>
+    <h2>Anmeldung</h2>
+
+    <label for="name">Vor- und Nachname</label>
+    <input type="text" id="name" autocomplete="name" required maxlength="100">
+
+    <label for="email">E-Mail</label>
+    <input type="email" id="email" autocomplete="email" required maxlength="150">
+
+    <label for="telefon">Telefonnummer</label>
+    <input type="tel" id="telefon" autocomplete="tel" required maxlength="40">
+
+    <label for="personen">Für wie viele Personen möchtest du reservieren?</label>
+    <select id="personen"></select>
+
+    <label id="terminLabel">Wann möchtest du mitkommen?</label>
+    <div id="termine" role="radiogroup" aria-labelledby="terminLabel"><p class="dim">Termine werden geladen …</p></div>
+    <p class="dim small">Kein passender Termin dabei? Schreib uns in der Nachricht deinen Wunschtermin.</p>
+
+    <label for="nachricht">Nachricht (optional)</label>
+    <textarea id="nachricht" maxlength="1000"></textarea>
+
+    <input type="text" id="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <label class="check"><input type="checkbox" id="datenschutz">
+      <span>Ich stimme zu, dass meine Angaben zur Organisation der Tour gespeichert und per E-Mail verwendet werden. Mehr in der <a href="/datenschutz.html">Datenschutzerklärung</a>.</span></label>
+
+    <div id="fehler" class="msg err" hidden></div>
+    <p><button type="submit" id="senden">Verbindlich anmelden</button></p>
+  </form>
+
+  <section id="ergebnis" class="card" hidden></section>
+
+  <footer class="dim small"><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a></footer>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>
