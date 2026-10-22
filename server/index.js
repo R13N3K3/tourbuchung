@@ -56,7 +56,7 @@ app.post('/api/buchung', limiter(8, 3600e3), async (req, res) => {
   if (!/^[0-9+()\-\/ ]{6,}$/.test(d.telefon)) return res.status(400).json({ error: 'Bitte eine gültige Telefonnummer angeben.' });
   if (!Number.isInteger(d.personen) || d.personen < 1 || d.personen > MAX_PERSONEN) return res.status(400).json({ error: `Bitte 1 bis ${MAX_PERSONEN} Personen wählen.` });
   if (!Number.isInteger(d.terminId)) return res.status(400).json({ error: 'Bitte einen Termin wählen.' });
-  if (b.datenschutz !== true) return res.status(400).json({ error: 'Bitte stimme der Datenverarbeitung zu.' });
+  if (b.datenschutz !== true) return res.status(400).json({ error: 'Bitte bestätige, dass du die Datenschutzerklärung gelesen hast.' });
   try {
     const r = await buchung.anmelden(d);
     res.json({ ok: true, code: r.code, status: r.status, betrag: r.betrag, termin: sichtbar(r.termin), paypal: process.env.PAYPAL_ME || null });

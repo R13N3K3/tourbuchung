@@ -48,3 +48,6 @@ pre { white-space: pre-wrap; font: inherit; margin: 6px 0 0; }
 details summary { cursor: pointer; }
 a { color: var(--accent); }
 .btn, .btn:visited { color: var(--accent-text); }
+.ph { background: #fff0a0; color: #2b2622; padding: 0 4px; border-radius: 4px; }
+.legal h2 { margin-top: 22px; }
+.legal p, .legal li { line-height: 1.55; }
