@@ -60,7 +60,7 @@ app.post('/api/buchung', limiter(8, 3600e3), async (req, res) => {
   if (b.datenschutz !== true) return res.status(400).json({ error: 'Bitte bestätige, dass du die Datenschutzerklärung gelesen hast.' });
   try {
     const r = await buchung.anmelden(d);
-    res.json({ ok: true, code: r.code, status: r.status, betrag: r.betrag, termin: sichtbar(r.termin), paypal: process.env.PAYPAL_ME || null });
+    res.json({ ok: true, code: r.code, status: r.status, betrag: r.betrag, personen: d.personen, termin: sichtbar(r.termin), paypal: process.env.PAYPAL_ME || null });
   } catch (err) {
     if (err instanceof buchung.Fehler) return res.status(409).json({ error: err.message });
     console.error(err);

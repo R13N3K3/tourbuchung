@@ -90,7 +90,7 @@ function zeigeErgebnis(d) {
        <p class="dim small">Dein Code</p><span class="code">${esc(d.code)}</span>`
     : `<span class="big-emoji">🎉</span><h2>Angemeldet!</h2>
        <p>Dein Platz für <strong>${esc(fmt(d.termin.start))}</strong> ist reserviert. Die Bestätigung mit allen Details kommt per E-Mail (schau auch im Spam-Ordner nach).</p>
-       <p>Bitte zahle <strong>${d.betrag} €</strong> per PayPal „Freunde“ (keine Barzahlung).</p>${pay}
+       <p>Bitte zahle <strong>${d.betrag} €</strong> per PayPal „Freunde“ (keine Barzahlung).<br><span class="dim small">${d.personen} ${d.personen === 1 ? 'Person' : 'Personen'} × ${d.termin.preis} € = ${d.betrag} €</span></p>${pay}
        <p class="dim small">Dein Code</p><span class="code">${esc(d.code)}</span>
        <p class="dim small">Bis bald im Wald! 🌲🍄</p>`;
   $('form').hidden = true;
