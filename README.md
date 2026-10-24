@@ -222,7 +222,7 @@ Wer keinen Server betreiben will, kann das Formular als **Google Formular** anle
 
 **Einrichtung (einmal, ca. 5 Minuten):**
 1. Auf [script.google.com](https://script.google.com) mit dem Google-Konto des Veranstalters ein **neues Projekt** anlegen.
-2. Den Inhalt von `formular-erstellen.gs` einfügen. Oben unter `CONFIG` Name, Kontakt-Mail, PayPal.me-Name, Adresse der Datenschutzerklärung und die Termine eintragen (nur in der eigenen Kopie bei Google, nicht im Repository).
+2. Den Inhalt von `formular-erstellen.gs` einfügen. Oben unter `CONFIG` Name, Kontakt-Mail, PayPal.me-Name, Verantwortlichen, Adresse der Datenschutzerklärung und die Termine eintragen (nur in der eigenen Kopie bei Google, nicht im Repository).
 3. Die Funktion **`formularErstellen`** ausführen und die Berechtigungen bestätigen (Formulare, Tabellen, E-Mail, Trigger).
 4. Im **Ausführungsprotokoll** stehen danach die Links: Formular zum Teilen, Formular bearbeiten, Antworten-Tabelle.
 5. **Neu erstellen:** Vorher die Funktion **`aufraeumen`** ausführen (löscht die alten Trigger) und das alte Formular und die alte Tabelle in Google Drive löschen, sonst gehen die Mails doppelt raus.
@@ -232,6 +232,8 @@ Wer keinen Server betreiben will, kann das Formular als **Google Formular** anle
 - **Plätze:** Pro Termin zählt das Skript die bestätigten Personen. Ist der Termin voll, kommen weitere Anmeldungen auf die **Warteliste** (mit entsprechender Mail), und der Termin verschwindet aus dem Formular.
 - Täglich um 9 Uhr eine **Erinnerung** an alle, deren Tour in den nächsten 48 Stunden stattfindet, bei offener Zahlung mit Hinweis.
 - Zahlungen hakt der Veranstalter in der Tabelle in der Spalte **Bezahlt** mit `ja` ab.
+
+**Datenschutzerklärung (Pflicht):** Für diese Variante gibt es einen eigenen Entwurf: [`docs/google-forms/datenschutzerklaerung-google-forms.md`](docs/google-forms/datenschutzerklaerung-google-forms.md). Er unterscheidet sich von der Web-App, weil die Daten bei Google liegen, die Mails über Google laufen und es **keine automatische Löschung** gibt (die Tabelle muss nach der Frist von Hand geleert werden). Platzhalter ausfüllen, rechtlich prüfen lassen, ohne eigene Webseite als Google Dokument im Web veröffentlichen und den Link in `CONFIG.datenschutzUrl` eintragen. Zusätzlich braucht es mit Google einen Auftragsverarbeitungsvertrag (bei Google Workspace in der Admin-Konsole, bei einem rein privaten Konto nach meinem Kenntnisstand nicht möglich, bitte klären). Das Formular zeigt unter „🔒 Datenschutz" den Verantwortlichen und den Link an, das Skript warnt im Protokoll, wenn sie fehlen.
 
 **Was es dort nicht gibt** (nur in der Web-App): Stornolink, automatisches Nachrücken von der Warteliste, die Verwaltungsseite, Zahlungserinnerung, Dankesmail, Termine ohne Skriptänderung anlegen, automatische Löschung nach der Frist. Außerdem liegen die Daten bei Google, das gehört in die Datenschutzerklärung, und Impressum und Datenschutzerklärung braucht es auch hier. Das Skript ist nach der Doku geschrieben und **noch nicht in einem echten Google-Konto ausprobiert**, nur auf Syntax geprüft. Die Menünamen bei Google ändern sich, im Zweifel sinngemäß suchen.
 
