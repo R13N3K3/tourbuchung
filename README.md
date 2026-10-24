@@ -2,6 +2,20 @@
 
 Kleine Web-App für geführte Pilztouren. Gäste melden sich selbst an, der Server bestätigt, erinnert und kümmert sich um Warteliste und Absagen. Der Veranstalter muss nur noch Termine anlegen und Zahlungen abhaken. Entstanden nach dem Vorbild des bisherigen Google-Formulars (dieselben Felder und Texte, aber ohne Barzahlung), unabhängig von TourPost.
 
+> [!IMPORTANT]
+> ## 🧾 Es gibt zwei Varianten: Web-App oder Google Formular
+>
+> | | 🖥️ **Web-App** (dieses Projekt) | 📋 **Google Formular** |
+> |---|---|---|
+> | Server nötig | ja (Heimserver oder gemieteter Server) | **nein**, läuft komplett bei Google |
+> | Einrichtung | etwas Aufwand | **ca. 5 Minuten** mit einem Skript |
+> | Bestätigung, Warteliste, Erinnerung | ✅ | ✅ (Warteliste ohne automatisches Nachrücken) |
+> | Stornolink, Verwaltungsseite, Dankesmail, Zahlungserinnerung | ✅ | ❌ |
+> | Automatische Löschung nach der Frist | ✅ | ❌ (von Hand) |
+> | Daten liegen | auf dem eigenen Server | bei Google |
+>
+> 👉 **Du willst es ohne eigenen Server?** Springe direkt zu [**Variante ohne eigenen Server: Google Forms**](#variante-ohne-eigenen-server-google-forms). Das Skript baut dir das komplette Formular samt Antworten-Tabelle und Mails.
+
 ## Vorschau
 
 <table>
