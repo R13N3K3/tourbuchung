@@ -235,7 +235,23 @@ Wer keinen Server betreiben will, kann das Formular als **Google Formular** anle
 
 **Datenschutzerklärung (Pflicht):** Für diese Variante gibt es einen eigenen Entwurf: [`docs/google-forms/datenschutzerklaerung-google-forms.md`](docs/google-forms/datenschutzerklaerung-google-forms.md). Er unterscheidet sich von der Web-App, weil die Daten bei Google liegen, die Mails über Google laufen und es **keine automatische Löschung** gibt (die Tabelle muss nach der Frist von Hand geleert werden). Platzhalter ausfüllen, rechtlich prüfen lassen, ohne eigene Webseite als Google Dokument im Web veröffentlichen und den Link in `CONFIG.datenschutzUrl` eintragen. Zusätzlich braucht es mit Google einen Auftragsverarbeitungsvertrag (bei Google Workspace in der Admin-Konsole, bei einem rein privaten Konto nach meinem Kenntnisstand nicht möglich, bitte klären). Das Formular zeigt unter „🔒 Datenschutz" den Verantwortlichen und den Link an, das Skript warnt im Protokoll, wenn sie fehlen.
 
+**Datenschutzerklärung veröffentlichen (Schritt für Schritt):**
+1. Neues **Google Dokument** anlegen (`docs.new`) und den Text aus `docs/google-forms/datenschutzerklaerung-google-forms.md` hineinkopieren. Alles in `[[…]]` ausfüllen, die Hinweise für den Veranstalter und den roten Entwurfskasten löschen.
+2. Im Dokument **Datei → Teilen → Im Web veröffentlichen → Veröffentlichen** wählen und den Link kopieren.
+3. Im Skript `datenschutzUrl` auf diesen Link setzen und `verantwortlicher` mit Name und Anschrift füllen.
+4. Formular neu erzeugen: `aufraeumen` ausführen, altes Formular und alte Tabelle in Drive löschen, `formularErstellen` ausführen. (Alternativ im bestehenden Formular den Hilfetext der Frage „🔒 Datenschutz" von Hand ändern, dann steht der Link aber nicht im Skript.)
+5. Die Anschrift des Veranstalters gehört **nicht** in Dateien im Repository, nur in die eigene Kopie bei Google.
+
 **Was es dort nicht gibt** (nur in der Web-App): Stornolink, automatisches Nachrücken von der Warteliste, die Verwaltungsseite, Zahlungserinnerung, Dankesmail, Termine ohne Skriptänderung anlegen, automatische Löschung nach der Frist. Außerdem liegen die Daten bei Google, das gehört in die Datenschutzerklärung, und Impressum und Datenschutzerklärung braucht es auch hier. Das Skript ist nach der Doku geschrieben und **noch nicht in einem echten Google-Konto ausprobiert**, nur auf Syntax geprüft. Die Menünamen bei Google ändern sich, im Zweifel sinngemäß suchen.
+
+## Datenschutzerklärung und Impressum der Web-App ausfüllen
+
+Die beiden Seiten liegen als Entwurf in `public/datenschutz.html` und `public/impressum.html`. Sie unterscheiden sich von der Erklärung für die Google-Variante, weil die Web-App auf einem eigenen Server läuft und alte Daten automatisch löscht.
+1. Beide Dateien öffnen und alle **gelb markierten** Stellen (`class="ph"`) ausfüllen: Verantwortlicher, Anschrift, E-Mail, Hoster, Mail-Anbieter, Fristen, Aufsichtsbehörde, Datum.
+2. Die Löschfrist muss zu `LOESCHFRIST_MONATE` in der `.env` passen (Standard 12 Monate, stornierte Anmeldungen nach 30 Tagen).
+3. Die roten **ENTWURF**-Hinweise oben auf beiden Seiten entfernen, wenn alles stimmt und rechtlich geprüft ist.
+4. Server neu starten. Die Seiten sind dann unter `/datenschutz.html` und `/impressum.html` erreichbar und im Formular verlinkt.
+5. Die echten Angaben nur in einem **privaten** Repository oder auf dem Server speichern, nicht in einem öffentlichen.
 
 ## Vor dem Start erledigen
 
