@@ -25,7 +25,8 @@ const CONFIG = {
   preis: 40,                        // Euro pro Person
   maxPersonen: 10,
   paypalMe: '',                     // Name bei paypal.me/<NAME>. Leer = nur Hinweis ohne Link
-  datenschutzUrl: '',               // Adresse der Datenschutzerklärung (Pflicht vor dem Start)
+  verantwortlicher: '',             // Name und Anschrift des Veranstalters für den Datenschutzhinweis im Formular
+  datenschutzUrl: '',               // Adresse der Datenschutzerklärung (Pflicht vor dem Start), Entwurf: datenschutzerklaerung-google-forms.md
   // Termine: label erscheint im Formular, start ist Ortszeit, plaetze ist die Höchstzahl der Personen
   termine: [
     { label: 'Samstag, 14. November 2026, 10:00 Uhr', start: '2026-11-14T10:00', plaetze: 10 },
@@ -49,6 +50,7 @@ const EXTRA = ['Status', 'Code', 'Bezahlt', 'Erinnert'];   // zusätzliche Spalt
 
 function formularErstellen() {
   if (!CONFIG.kontaktEmail) throw new Error('Bitte zuerst CONFIG.kontaktEmail ausfüllen.');
+  if (!CONFIG.datenschutzUrl || !CONFIG.verantwortlicher) Logger.log('Achtung: datenschutzUrl und verantwortlicher fehlen. Ohne Datenschutzerklärung darf das Formular nicht veröffentlicht werden.');
   const form = FormApp.create(CONFIG.titel);
   form.setTitle('🍄 ' + CONFIG.titel);
   form.setDescription(
@@ -99,7 +101,10 @@ function formularErstellen() {
   form.addParagraphTextItem().setTitle(F.nachricht);
   form.addCheckboxItem().setTitle(F.datenschutz).setRequired(true)
     .setChoiceValues(['Ich habe die Datenschutzerklärung gelesen. Meine Angaben werden zur Organisation der Tour gespeichert und per E-Mail verwendet.'])
-    .setHelpText(CONFIG.datenschutzUrl ? 'Datenschutzerklärung: ' + CONFIG.datenschutzUrl : 'Datenschutzerklärung: Adresse in CONFIG.datenschutzUrl eintragen.');
+    .setHelpText(
+      'Verantwortlich: ' + (CONFIG.verantwortlicher || '(in CONFIG.verantwortlicher eintragen)') + '. ' +
+      'Gespeichert werden deine Angaben in Google Formularen und Tabellen. ' +
+      'Datenschutzerklärung: ' + (CONFIG.datenschutzUrl || '(Adresse in CONFIG.datenschutzUrl eintragen)'));
 
   const tabelle = SpreadsheetApp.create(CONFIG.titel + ' (Antworten)');
   form.setDestination(FormApp.DestinationType.SPREADSHEET, tabelle.getId());
