@@ -214,6 +214,24 @@ Sicherungen nach 30 Tagen zu löschen passt zur Löschfrist der Datenschutzerkl�
 
 **Tipp zur Verwaltung:** `/admin/` ist über das Internet erreichbar und nur durch das Passwort geschützt. Wer mehr Schutz will, kann in Cloudflare (Zero Trust, „Access") den Pfad `/admin*` zusätzlich per Anmeldung absichern. Das ist im kostenlosen Tarif für wenige Nutzer möglich, die Details ändern sich bei Cloudflare öfter.
 
+## Variante ohne eigenen Server: Google Forms
+
+Wer keinen Server betreiben will, kann das Formular als **Google Formular** anlegen. Das Skript `docs/google-forms/formular-erstellen.gs` baut es mit denselben Feldern wie die Anmeldeseite, dazu eine Tabelle für die Antworten.
+
+**Einrichtung (einmal, ca. 5 Minuten):**
+1. Auf [script.google.com](https://script.google.com) mit dem Google-Konto des Veranstalters ein **neues Projekt** anlegen.
+2. Den Inhalt von `formular-erstellen.gs` einfügen. Oben unter `CONFIG` Name, Kontakt-Mail, PayPal.me-Name, Adresse der Datenschutzerklärung und die Termine eintragen (nur in der eigenen Kopie bei Google, nicht im Repository).
+3. Die Funktion **`formularErstellen`** ausführen und die Berechtigungen bestätigen (Formulare, Tabellen, E-Mail, Trigger).
+4. Im **Ausführungsprotokoll** stehen danach die Links: Formular zum Teilen, Formular bearbeiten, Antworten-Tabelle.
+
+**Was automatisch läuft:**
+- Bei jeder Anmeldung eine **Bestätigungsmail** mit Code, Treffpunkt, Ausrüstung und Zahlungshinweis. Der Veranstalter bekommt eine Meldung.
+- **Plätze:** Pro Termin zählt das Skript die bestätigten Personen. Ist der Termin voll, kommen weitere Anmeldungen auf die **Warteliste** (mit entsprechender Mail), und der Termin verschwindet aus dem Formular.
+- Täglich um 9 Uhr eine **Erinnerung** an alle, deren Tour in den nächsten 48 Stunden stattfindet, bei offener Zahlung mit Hinweis.
+- Zahlungen hakt der Veranstalter in der Tabelle in der Spalte **Bezahlt** mit `ja` ab.
+
+**Was es dort nicht gibt** (nur in der Web-App): Stornolink, automatisches Nachrücken von der Warteliste, die Verwaltungsseite, Zahlungserinnerung, Dankesmail, Termine ohne Skriptänderung anlegen, automatische Löschung nach der Frist. Außerdem liegen die Daten bei Google, das gehört in die Datenschutzerklärung, und Impressum und Datenschutzerklärung braucht es auch hier. Das Skript ist nach der Doku geschrieben und **noch nicht in einem echten Google-Konto ausprobiert**, nur auf Syntax geprüft. Die Menünamen bei Google ändern sich, im Zweifel sinngemäß suchen.
+
 ## Vor dem Start erledigen
 
 - **Impressum und Datenschutzerklärung** (`public/impressum.html`, `public/datenschutz.html`) sind nur Platzhalter. Sie müssen vom Veranstalter ausgefüllt und geprüft werden, die Seite speichert Namen, E-Mail und Telefonnummern.
