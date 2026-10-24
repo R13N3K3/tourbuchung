@@ -216,15 +216,16 @@ Sicherungen nach 30 Tagen zu löschen passt zur Löschfrist der Datenschutzerkl�
 
 ## Variante ohne eigenen Server: Google Forms
 
-Wer keinen Server betreiben will, kann das Formular als **Google Formular** anlegen. Das Skript `docs/google-forms/formular-erstellen.gs` baut es mit denselben Feldern wie die Anmeldeseite, dazu eine Tabelle für die Antworten.
+Wer keinen Server betreiben will, kann das Formular als **Google Formular** anlegen. Das Skript `docs/google-forms/formular-erstellen.gs` baut es mit denselben Feldern, Abschnitten (Das erwartet dich, Gut zu wissen, So läuft die Anmeldung), Emojis und Kopfbild wie die Anmeldeseite, dazu eine Tabelle für die Antworten.
 
-<p align="center"><img src="docs/screenshots/google-formular-vorschau.png" width="420" alt="Vorschau des Google Formulars"><br><sub><b>Nachgebaute Vorschau</b> (kein echter Screenshot): So ähnlich sieht das Formular aus, wenn das Skript es erzeugt hat. Aussehen und Farben bestimmt am Ende Google.</sub></p>
+<p align="center"><img src="docs/screenshots/google-formular-vorschau.png" width="380" alt="Vorschau des Google Formulars"><br><sub><b>Nachgebaute Vorschau</b> (kein echter Screenshot): So ähnlich sieht das Formular aus, wenn das Skript es erzeugt hat. Farben und Hintergrund bestimmt am Ende Google. Nach dem Erstellen im Formular oben auf die Farbpalette (Design anpassen) klicken und Orange und Creme wählen, dann passt es zur Anmeldeseite.</sub></p>
 
 **Einrichtung (einmal, ca. 5 Minuten):**
 1. Auf [script.google.com](https://script.google.com) mit dem Google-Konto des Veranstalters ein **neues Projekt** anlegen.
 2. Den Inhalt von `formular-erstellen.gs` einfügen. Oben unter `CONFIG` Name, Kontakt-Mail, PayPal.me-Name, Adresse der Datenschutzerklärung und die Termine eintragen (nur in der eigenen Kopie bei Google, nicht im Repository).
 3. Die Funktion **`formularErstellen`** ausführen und die Berechtigungen bestätigen (Formulare, Tabellen, E-Mail, Trigger).
 4. Im **Ausführungsprotokoll** stehen danach die Links: Formular zum Teilen, Formular bearbeiten, Antworten-Tabelle.
+5. **Neu erstellen:** Vorher die Funktion **`aufraeumen`** ausführen (löscht die alten Trigger) und das alte Formular und die alte Tabelle in Google Drive löschen, sonst gehen die Mails doppelt raus.
 
 **Was automatisch läuft:**
 - Bei jeder Anmeldung eine **Bestätigungsmail** mit Code, Treffpunkt, Ausrüstung und Zahlungshinweis. Der Veranstalter bekommt eine Meldung.
